@@ -1,0 +1,44 @@
+
+/* #766151 #48372F #514947 #FEE202 #FFFFFF
+   http://www.onextrapixel.com/2013/10/25/40-stunning-website-designs-with-great-color-schemes/
+   Cheval Blanc
+*/
+
+/* Backgrounds   */
+#canvass{
+  background:#766151;
+}
+
+#pageHeader{
+  background:#514947;
+}
+
+#weatherBody{
+  background: #514947;
+}
+
+.weatherDayContentRight{
+  background:#514947;
+}
+
+#spaBody{
+  background:#766151;
+}
+
+#pageFooter{
+  background:#766151;
+ }
+
+
+/*Text  */
+#pageBody{
+  color: #FEE202;
+}
+
+.tdWeatherDesc, .tdWeatherDay, .tdWeatherTemp, .tdWeatherTemph, .tdWeatherConditions{
+  color: #FEE202;
+}
+
+.tdWeatherTempL{
+  color: blueviolet; 
+}

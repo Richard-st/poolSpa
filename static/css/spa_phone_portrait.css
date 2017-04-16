@@ -1,0 +1,96 @@
+
+#pageHeader {
+
+    height: 0%;
+}
+#weatherBody{
+  height: 15%;
+
+}
+
+#pageBody{
+  height: 85%;
+}
+
+#menuBody{
+  width : 100%; 
+  height: 6%;
+  float:left;
+}
+
+#spaBody{
+  width : 100%; 
+  height: 100%;
+  float:left;
+}
+
+
+#dWeather1{
+  width : 100%; 
+}
+
+#dWeather2{
+  display: none;
+}
+
+#dWeather3{
+  display: none;
+}
+
+#weatherTxt0 , #weatherTxt1, #weatherTxt2 , #weatherTxt3, #weatherTxt4 , #weatherTxt5{
+  display: none;
+}
+
+
+
+
+#spaTemp , #poolTemp{
+  font-size: 120px;   	
+}
+
+.tdWeatherday{
+  colspan:4;
+}
+
+.tdTemprature{
+  line-height: 100px;
+
+  width:100%;
+  text-align: center;
+  font-size: 100px; 
+}
+
+.trTempLabel{
+  text-align: center;
+  font-size: 40px;  
+}
+
+#tdWeatherIcon1D1, #weatherIcon1D1, #tdWeatherIcon1N1, #weatherIcon1N1{
+   display: inline-table;
+}
+
+.divSpaButton{
+  float: left;;
+  width: 100%;
+  height: 22%;
+
+}
+.imgSpaButton{
+  width:80px;
+  height:80px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+#pageFooter{
+  background:green;
+  width : 100%; 
+  height: 3%;
+  float: left;
+}
+
+.divSpaButton{
+  padding-top: 0px;
+}
+

@@ -1,0 +1,57 @@
+2017-03-09 22:09:54,963 - mqttSub - INFO - Connected with result code: 0
+Traceback (most recent call last):
+  File "mqttSub.py", line 124, in <module>
+    poolTempClient.loop_forever()
+  File "/home/dad/.local/lib/python2.7/site-packages/paho/mqtt/client.py", line 1378, in loop_forever
+    rc = self.loop(timeout, max_packets)
+  File "/home/dad/.local/lib/python2.7/site-packages/paho/mqtt/client.py", line 882, in loop
+    socklist = select.select(rlist, wlist, [], timeout)
+KeyboardInterrupt
+2017-03-09 22:10:14,301 - mqttSub - INFO - Connected with result code: 0
+2017-03-09 22:10:37,301 - werkzeug - WARNING - WebSocket transport not available. Install eventlet or gevent and gevent-websocket for improved performance.
+Traceback (most recent call last):
+  File "poolSpaPage.py", line 50, in <module>
+    socketio.run(app, host='0.0.0.0',debug=True, port=80)
+  File "/home/dad/.local/lib/python2.7/site-packages/flask_socketio/__init__.py", line 469, in run
+    use_reloader=use_reloader, **kwargs)
+  File "/home/dad/.local/lib/python2.7/site-packages/flask/app.py", line 841, in run
+    run_simple(host, port, self, **options)
+  File "/home/dad/.local/lib/python2.7/site-packages/werkzeug/serving.py", line 691, in run_simple
+    s.bind((hostname, port))
+  File "/usr/lib/python2.7/socket.py", line 228, in meth
+    return getattr(self._sock,name)(*args)
+socket.error: [Errno 13] Permission denied
+2017-03-09 22:10:51,065 - werkzeug - WARNING - WebSocket transport not available. Install eventlet or gevent and gevent-websocket for improved performance.
+2017-03-09 22:10:51,065 - werkzeug - INFO -  * Running on http://0.0.0.0:80/ (Press CTRL+C to quit)
+2017-03-09 22:10:51,066 - werkzeug - INFO -  * Restarting with stat
+2017-03-09 22:10:51,190 - werkzeug - WARNING - WebSocket transport not available. Install eventlet or gevent and gevent-websocket for improved performance.
+2017-03-09 22:10:51,190 - werkzeug - WARNING -  * Debugger is active!
+2017-03-09 22:10:51,195 - werkzeug - INFO -  * Debugger pin code: 316-553-966
+2017-03-09 22:11:00,796 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET / HTTP/1.1" 200 -
+2017-03-09 22:11:00,816 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET /static/css/spa.css HTTP/1.1" 304 -
+2017-03-09 22:11:00,820 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET /static/css/palette-goldfish.css HTTP/1.1" 304 -
+2017-03-09 22:11:00,821 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET /static/js/jquery.timer.js HTTP/1.1" 304 -
+2017-03-09 22:11:00,825 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET /static/image/button-bubbles-off.png HTTP/1.1" 304 -
+2017-03-09 22:11:00,828 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET /static/image/button-light-off.png HTTP/1.1" 304 -
+2017-03-09 22:11:00,832 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET /static/image/button-whirl-off.png HTTP/1.1" 304 -
+2017-03-09 22:11:00,881 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET /static/css/spa_phone_landscape.css HTTP/1.1" 304 -
+2017-03-09 22:11:00,884 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET /static/css/spa_phone_portrait.css HTTP/1.1" 304 -
+2017-03-09 22:11:00,927 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET /socket.io/?EIO=3&transport=polling&t=LgoLUwx HTTP/1.1" 200 -
+2017-03-09 22:11:00,950 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "POST /api/poolSpaStatusBroadcast/ HTTP/1.1" 200 -
+2017-03-09 22:11:00,984 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:00] "GET /socket.io/?EIO=3&transport=polling&t=LgoLUxs&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:11:01,014 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:01] "GET /static/image/button-bubbles-on.png HTTP/1.1" 304 -
+2017-03-09 22:11:01,300 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:01] "GET /api/wunderground/ HTTP/1.1" 200 -
+2017-03-09 22:11:25,462 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:25] "POST /socket.io/?EIO=3&transport=polling&t=LgoLb2a&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:11:25,485 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:25] "GET /socket.io/?EIO=3&transport=polling&t=LgoLUyG&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:11:41,840 - mqttSub - INFO - message in: home/poolSpa/tempSensor/spaTemp:35
+2017-03-09 22:11:42,961 - werkzeug - INFO - 127.0.0.1 - - [09/Mar/2017 22:11:42] "GET /api/poolSpaStatusBroadcast/ HTTP/1.1" 200 -
+2017-03-09 22:11:42,962 - mqttSub - INFO - message processed 
+2017-03-09 22:11:42,978 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:42] "GET /socket.io/?EIO=3&transport=polling&t=LgoLb35&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:11:50,511 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:50] "POST /socket.io/?EIO=3&transport=polling&t=LgoLh9l&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:11:50,561 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:11:50] "GET /socket.io/?EIO=3&transport=polling&t=LgoLfKG&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:12:16,332 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:12:16] "POST /socket.io/?EIO=3&transport=polling&t=LgoLnHL&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:12:16,362 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:12:16] "GET /socket.io/?EIO=3&transport=polling&t=LgoLhAi&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:12:41,157 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:12:41] "POST /socket.io/?EIO=3&transport=polling&t=LgoLtOb&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:12:41,197 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:12:41] "GET /socket.io/?EIO=3&transport=polling&t=LgoLnHz&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:13:05,690 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:13:05] "POST /socket.io/?EIO=3&transport=polling&t=LgoLzW0&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -
+2017-03-09 22:13:05,733 - werkzeug - INFO - 192.168.1.16 - - [09/Mar/2017 22:13:05] "GET /socket.io/?EIO=3&transport=polling&t=LgoLtPM&sid=0d2c4c18793f4df28c3d63f3c45c88a5 HTTP/1.1" 200 -

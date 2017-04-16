@@ -1,0 +1,47 @@
+#pageBody{
+  height: 90%;
+}
+
+#weatherBody{
+  height: 25%;
+}
+
+#weatherTxt0 , #weatherTxt1, #weatherTxt2 , #weatherTxt3, #weatherTxt4 , #weatherTxt5{
+  display: none;
+}
+
+#dWeather1, #dWeather2{
+  width: 50%;
+} 
+
+#dWeather3{
+  display: none;
+}
+
+.trTempLabel{
+  text-align: center;
+  font-size: 30px;  
+}
+
+.tdTemprature{
+  line-height: 30px;
+  width:100%;
+  text-align: center;
+  font-size: 30px; 
+}
+
+#tdWeatherIcon1D1, #weatherIcon1D1, #tdWeatherIcon1N1, #weatherIcon1N1{
+   display: inline;;
+}
+
+.imgSpaButton{
+  width:100px;
+  height:100px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.divSpaButton{
+  padding-top: 0px;
+}

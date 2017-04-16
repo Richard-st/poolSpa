@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/spa.css') }} ">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/spa_phone_landscape.css') }}" media="screen and (max-width:640px)">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/spa_phone_portrait.css') }}"  media="screen and (max-width:400px)">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/palette-goldfish.css') }}" >
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> 
+
+
+
+    <script type="text/javascript" src="static/js/jquery.timer.js"></script>
+
+    <!-- <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script> -->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+
+
+    <script type="text/javascript">
+       jQuery(document).ready(function loadWeather() {
+          jQuery.ajax({
+            url: "{{ url_for ('wunderground') }}" ,
+            type: "GET",
+            success: function(data) {
+              var weatherJSON = jQuery.parseJSON(data);
+
+              jQuery('#weatherDay1').html(weatherJSON.forecast.simpleforecast.forecastday[0].date.weekday + " " + weatherJSON.forecast.simpleforecast.forecastday[0].date.day + "/" + weatherJSON.forecast.simpleforecast.forecastday[0].date.month);
+              jQuery('#weatherDay2').html(weatherJSON.forecast.simpleforecast.forecastday[1].date.weekday + " " + weatherJSON.forecast.simpleforecast.forecastday[1].date.day + "/" + weatherJSON.forecast.simpleforecast.forecastday[1].date.month);
+              jQuery('#weatherDay3').html(weatherJSON.forecast.simpleforecast.forecastday[2].date.weekday + " " + weatherJSON.forecast.simpleforecast.forecastday[2].date.day + "/" + weatherJSON.forecast.simpleforecast.forecastday[2].date.month);
+
+              jQuery('#weatherTemp1H').html(weatherJSON.forecast.simpleforecast.forecastday[0].high.celsius);
+              jQuery('#weatherTemp1L').html(weatherJSON.forecast.simpleforecast.forecastday[0].low.celsius);
+              jQuery('#weatherTemp2H').html(weatherJSON.forecast.simpleforecast.forecastday[1].high.celsius);
+              jQuery('#weatherTemp2L').html(weatherJSON.forecast.simpleforecast.forecastday[1].low.celsius);
+              jQuery('#weatherTemp3H').html(weatherJSON.forecast.simpleforecast.forecastday[2].high.celsius);
+              jQuery('#weatherTemp3L').html(weatherJSON.forecast.simpleforecast.forecastday[2].low.celsius);
+
+
+              jQuery('#weatherIcon1D').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[0].icon+'.gif');
+              jQuery('#weatherIcon1D1').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[0].icon+'.gif');
+              jQuery('#weatherIcon1N').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[1].icon+'.gif');
+              jQuery('#weatherIcon1N1').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[1].icon+'.gif');
+              jQuery('#weatherIcon2D').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[2].icon+'.gif');
+              jQuery('#weatherIcon2N').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[3].icon+'.gif');
+              jQuery('#weatherIcon3D').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[4].icon+'.gif');
+              jQuery('#weatherIcon3N').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[5].icon+'.gif');
+
+              jQuery('#weatherCondition1').html(weatherJSON.forecast.simpleforecast.forecastday[0].conditions);
+              jQuery('#weatherCondition2').html(weatherJSON.forecast.simpleforecast.forecastday[1].conditions);
+              jQuery('#weatherCondition3').html(weatherJSON.forecast.simpleforecast.forecastday[2].conditions);
+
+
+            }
+          });
+          $.post('/api/poolSpaStatusBroadcast/');
+       });
+
+    </script>
+
+      <script type="text/javascript" charset="utf-8">
+          var socket = io.connect();
+          socket.on('connect', function() {
+              console.log('Connected');
+          });
+
+          socket.on('poolSpaStatusUpdate', function(data) {
+
+              var statusJSON = jQuery.parseJSON(data);
+              jQuery('#tdSpaTemp').html(statusJSON.spaTemp);
+              jQuery('#tdPoolTemp').html(statusJSON.poolTemp);
+
+              if ( (statusJSON.spaBubbles) == 'on')
+                jQuery('#spaBubblesButton').attr('src', ' {{ url_for('static', filename='image/button-bubbles-on.png') }} ' );
+              else
+                jQuery('#spaBubblesButton').attr('src', ' {{ url_for('static', filename='image/button-bubbles-off.png') }} ' );
+
+              if ( (statusJSON.spaLights) == 'on')
+                jQuery('#spaLightButton').attr('src', ' {{ url_for('static', filename='image/button-light-on.png') }} ' );
+              else
+                jQuery('#spaLightButton').attr('src', ' {{ url_for('static', filename='image/button-light-off.png') }} ' );
+
+              if ( (statusJSON.spaPump) == 'on')
+                jQuery('#spaWhirlButton').attr('src', ' {{ url_for('static', filename='image/button-whirl-on.png') }} ' );
+              else
+                jQuery('#spaWhirlButton').attr('src', ' {{ url_for('static', filename='image/button-whirl-off.png') }} ' );
+          })
+
+
+      </script>
+
+  </head>
+  <body>
+    <div id=canvass>
+      <div id=pageHeader>
+
+      </div>
+      <div id=weatherBody>
+
+
+        <!-- Weather day 0 -->
+
+        <div class=weatherDay id="dWeather1">
+          <div class=weatherDayContent>
+            <table class=tWeatherTable>
+              <tr >
+                <td id=weatherDay1 class="tdWeatherDay" colspan=4 >
+                </td>
+              </tr>
+              <tr>
+                <td class="tdWeatherTempH">
+                  <span id=weatherTemp1H>  </span> <sup>c</sup>
+                </td>
+                <td class="tdWeatherIcon">
+                  <img id=weatherIcon1D  class="imgIcon"  />
+                </td>
+
+                <td class="tdWeatherTempL">
+                  <span id=weatherTemp1L>  </span> <sup>c</sup>
+                </td>
+                <td class="tdWeatherIcon">
+                  <img id=weatherIcon1N class="imgIcon"  />
+                </td>
+              </tr>
+              <tr>
+                <td class="tdWeatherConditions" colspan=4>
+                   <span id=weatherCondition1>  </span>
+                </td>
+              </tr>
+
+            </table>
+
+
+          </div>
+        </div>
+
+        <!-- Weather day 2 -->
+
+        <div class=weatherDay id="dWeather2" >
+          <div class=weatherDayContent>
+           <table class=tWeatherTable>
+              <tr >
+                <td id=weatherDay2 class="tdWeatherDay" colspan=4 >
+                </td>
+              </tr>
+             <tr>
+                <td class="tdWeatherTempH">
+                  <span id=weatherTemp2H>  </span> <sup>c</sup>
+                </td>
+                <td class="tdWeatherIcon">
+                  <img id=weatherIcon2D  class="imgIcon"  />
+                </td>
+
+                <td class="tdWeatherTempL">
+                  <span id=weatherTemp2L>  </span> <sup>c</sup>
+                </td>
+                <td class="tdWeatherIcon">
+                  <img id=weatherIcon2N class="imgIcon"  />
+                </td>
+              </tr>
+              <tr>
+                <td class="tdWeatherConditions" colspan=4>
+                   <span id=weatherCondition2>  </span>
+                </td>
+              </tr>
+
+            </table>
+          </div>
+        </div>
+
+        <!-- Weather day 3 -->
+
+        <div class=weatherDay id="dWeather3">
+          <div class=weatherDayContentRight>
+           <table class=tWeatherTable>
+              <tr >
+                <td id=weatherDay3 class="tdWeatherDay" colspan=4 >
+                </td>
+              </tr>
+
+             <tr>
+                <td class="tdWeatherTempH">
+                  <span id=weatherTemp3H>  </span> <sup>c</sup>
+                </td>
+                <td class="tdWeatherIcon">
+                  <img id=weatherIcon3D  class="imgIcon"  />
+                </td>
+
+                <td class="tdWeatherTempL">
+                  <span id=weatherTemp3L>  </span> <sup>c</sup>
+                </td>
+                <td class="tdWeatherIcon">
+                  <img id=weatherIcon3N class="imgIcon"  />
+                </td>
+              </tr>
+              <tr>
+                <td class="tdWeatherConditions" colspan=4>
+                   <span id=weatherCondition3>  </span>
+                </td>
+              </tr>
+
+            </table>
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <div id=pageBody>
+
+        <div id=spaBody>
+
+          <div id=spaTemp>
+            <table class="tTempPane">
+              <tr class= "trTempLabel">
+                <td  >
+                  SPA
+                </td>
+              </tr>
+              <tr class="tdTemprature">
+                <td class="tdTemprature" id="tdSpaTemp">
+                <!--  {{spaTemp}} -->
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div id=poolTemp>
+            <table class="tTempPane">
+              <tr class= "trTempLabel" >
+                <td  >
+                  POOL
+                </td>
+              </tr>
+              <tr class="tdTemprature">
+                <td class="tdTemprature" id="tdPoolTemp">
+                <!--  {{poolTemp}} -->
+                </td>
+              </tr>
+            </table>
+          </div>
+
+
+         <div class=divSpaButton id=spaBubbles>
+            <img id="spaBubblesButton" class=imgSpaButton src="static/image/button-bubbles-off.png" alt="Bubbles" />
+          </div>
+          <script>
+             jQuery('#spaBubblesButton').click(function(){
+                   socket.emit('toggleSpaBubbles');
+                   });
+          </script>
+
+
+          <div class=divSpaButton id=spaLights>
+            <img id="spaLightButton" class=imgSpaButton src="static/image/button-light-off.png" alt="Lights" />
+          </div>
+          <script>
+             jQuery('#spaLightButton').click(function(){
+                    socket.emit('toggleSpaLights');
+                    });
+          </script>
+
+          <div class=divSpaButton id=spaPump>
+            <img id="spaWhirlButton" class=imgSpaButton src="static/image/button-whirl-off.png" alt="Pump" />
+          </div>
+          <script>
+             jQuery('#spaWhirlButton').click(function(){
+                    socket.emit('toggleSpaPump');
+                    });
+          </script>
+
+        </div>
+
+      </div>
+      <div id=pageFooter>
+      </div>
+    </div>
+  </body>
+</html>

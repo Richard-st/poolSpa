@@ -1,0 +1,187 @@
+html,body{
+  width : 100%; 
+  height: 100%;
+  margin: 0;
+  padding : 0;
+  font-family :  "Helvetica","Arial", "Helvetica" ;  
+}
+
+#canvass{
+  width : 100%; 
+  height: 100%;
+}
+
+#pageHeader{
+  width : 100%; 
+  height: 2%;
+}
+
+#weatherBody{
+  width : 100%; 
+  height: 20%;
+  float:left;
+}
+
+.weatherDay{
+  width : 33.33%; 
+  height: 100%;
+  float:left;
+}
+
+.weatherDayContent{
+  width : 96%; 
+  height: 94%;
+  float:left;
+  padding:2px;
+}
+
+.weatherDayContentRight{
+  width : auto; 
+  height: 94%;
+  padding:2px;
+}
+
+.tWeatherTable{
+   border-collapse:collapse;
+	border-style: solid;
+	border-width: 1px;
+	    
+}
+.tdWeatherDay{
+	height: 14px;
+	font-size: 16px; 
+	text-align: center;
+	width: 30%;
+	font-weight: bold;	
+
+}
+
+.tdWeatherIcon{
+	text-align: center;
+	height: 40px;
+   width: 10%;
+
+   
+}
+
+#tdWeatherIcon1D1, #weatherIcon1D1, #tdWeatherIcon1N1, #weatherIcon1N1{
+   display: none;
+}
+
+
+.tdWeatherTempH{
+	height: 14px;
+	font-size: 12px; 
+	text-align: right;
+	width: 10%;
+	font-weight: bold;	
+	font-size: 16px; 	
+
+}
+
+.tdWeatherTempL{
+	height: 14px;
+	font-size: 12px; 
+	text-align: right;
+	width: 10%;
+	font-weight: bold;	
+	font-size: 16px; 	
+
+	color: blueviolet;	
+}
+.tdWeatherTemp{
+
+	text-align: left;
+	width: 10%;
+	font-weight: bold;	
+	font-size: 16px; 	
+	
+}
+
+.tdWeatherConditions{
+	height: 16px;
+	font-size: 16px; 
+
+	text-align: center;
+	width: 10%;
+	
+	font-weight: bold;
+	vertical-align: top;	
+	
+}
+
+
+.imgIcon{
+	height: 40px;
+	width: 40px;
+}
+
+
+#pageBody{
+  width : 100%; 
+  height: 68%;
+  float: left;
+}
+
+#spaBody{
+  width : 100%; 
+  height: 100%;
+  float:left;
+}
+
+#spaTemp{
+  width : 50%; 
+  float: left;
+
+  font-family :  "Helvetica","Arial", "Helvetica" ;  	
+}
+.tTempPane{
+  width: 100%;
+}
+
+.trTempLabel{
+  text-align: center;
+  font-size: 50px;  
+}
+
+.tdTemprature{
+  line-height: 160px;
+}
+
+.tdTemprature{
+  width:100%;
+  text-align: center;
+  font-size: 180px; 
+}
+
+
+
+#poolTemp{
+  width : 50%; 
+  float: left;
+ 
+  font-family :  "Helvetica","Arial", "Helvetica" ;  	
+	
+}
+
+
+.divSpaButton{
+  float: left;
+  width : 33.3%; 	
+  padding-top: 50px;
+}
+
+.imgSpaButton{
+  width:180px;
+  height:180px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+
+#pageFooter{
+  width : 100%; 
+  height: 10%;
+  float: left;
+}

@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/spa.css') }} ">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/spa_phone_landscape.css') }}" media="screen and (max-width:640px)">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/spa_phone_portrait.css') }}"  media="screen and (max-width:400px)">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/palette-goldfish.css') }}" >
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> 
+
+
+
+    <script type="text/javascript" src="static/js/jquery.timer.js"></script>
+
+    <!-- <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script> -->
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+
+
+    <script type="text/javascript">
+       jQuery(document).ready(function loadWeather() {
+          $.post('/api/poolSpaLoggerBroadcast/');
+       });
+
+    </script>
+
+      <script type="text/javascript" charset="utf-8">
+          var socket = io.connect();
+          socket.on('connect', function() {
+              console.log('Connected');
+          });
+
+          socket.on('poolSpaLoggerUpdate', function(data) {
+
+              //var statusJSON = jQuery.parseJSON(data);
+              //jQuery('#tdSpaTemp').html(data);
+              var logTextArea =  document.getElementById("logger");
+
+              logTextArea.value += data+"\n";
+              logTextArea.scrollTop = logTextArea.scrollHeight;;
+
+          })
+
+
+      </script>
+
+  </head>
+  <body>
+    <div id=canvass>
+      <div id=pageHeader>
+
+      </div>
+
+
+      <div id=pageBody>
+
+        <div id=spaBody>
+
+        <textarea id="logger" rows="30" cols="50">
+          
+        </textarea>
+
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>
