@@ -6,6 +6,7 @@ import requests
 import myconfig
 import logging
 import logging.config
+import json
 
 #import requests
 
@@ -56,6 +57,23 @@ def on_message(poolTempClient, userdata, msg):
          topicList[1] == "logger" ):
          # post log message SocketIO broadcast of status
          requests.get("http://localhost/api/poolSpaLoggerBroadcast/?logLine=" + str(msg.payload) )
+
+    #
+    # Device status message
+    #
+    if ( topicList[0] == myconfig.MQTT_PATH and
+         topicList[1] == "poolSpa" and
+         topicList[2] == "controllerAck" and
+         topicList[3] == "getStatus" ):		 
+
+         # import message and store in redis
+		 
+		   jStatus = json.loads( str(msg.payload))
+		   r.set("thermostatSpaTemp", jStatus['iSpaTemp'] )
+		   requests.get("http://localhost/api/poolSpaStatusBroadcast/")
+		   logger.info("message processed " )
+	   
+		   return
 
 
 

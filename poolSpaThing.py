@@ -37,7 +37,7 @@ class poolSpaThing(object):
 
     def setSpaTemp(self,value):
         """ mqtt staus publish for spa temperature """
-        publish.single( myconfig.MQTT_PATH + "/poolSpa/tempSensor/spaTemp", value, 0, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT, 
+        publish.single( myconfig.MQTT_PATH + "/poolSpa/tempSensor/spaTemp", value, 0, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT,
         auth={'username' : myconfig.MQTT_USER , 'password' : myconfig.MQTT_PASSWORD} )
 
     def getSpaTemp(self):
@@ -116,6 +116,11 @@ class poolSpaThing(object):
         publish.single(myconfig.MQTT_PATH + "/poolSpa/switchSet/setSpaLights", value, 1, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT ,
         auth={'username' : myconfig.MQTT_USER , 'password' : myconfig.MQTT_PASSWORD} )
 
+    def setThermostatSpaTemp(self,value):
+        """ mqtt publish changein thermostat temperature Values """
+        publish.single( myconfig.MQTT_PATH + "/poolSpa/controllerReq/setSpaTemp/", value, 0, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT,
+        auth={'username' : myconfig.MQTT_USER , 'password' : myconfig.MQTT_PASSWORD} )
+
 
     def thingStatus(self):
         """ return a json object of the current poolSpaThing status """
@@ -123,6 +128,7 @@ class poolSpaThing(object):
                               "poolTemp":int(round(float(r.get("poolTemp")))),
                               "spaBubbles":r.get("ackSpaBubbles"),
                               "spaPump":r.get("ackSpaPump"),
-                              "spaLights":r.get("ackSpaLights")
+                              "spaLights":r.get("ackSpaLights"),
+                              "thermostatSpaTemp":r.get("thermostatSpaTemp")
                              }
                           )

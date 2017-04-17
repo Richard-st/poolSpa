@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="static/css/style.css" rel="stylesheet" />
+
+	<!-- Socket IO -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io.connect();
+        socket.on('connect', function() {
+            console.log('Connected');
+        });
+
+        socket.on('poolSpaStatusUpdate', function(data) {
+
+            var statusJSON = jQuery.parseJSON(data);
+            jQuery('#spaThermostatTemp').val(statusJSON.thermostatSpaTemp);
+
+
+        })
+    </script>
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <div class="container-fluid">
+
+			  <div class="row">
+				<div class="col-lg-12">
+					<h3 class="page-header"><i class="fa fa-microchip" aria-hidden="true"></i> Dashboard</h3>
+				</div>
+			</div>
+
+            <div class="row">
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+					<div class="info-box blue-bg">
+						<i class="fa fa-cloud-download"></i>
+						<div class="count">6.674</div>
+						<div class="title">Download</div>
+					</div><!--/.info-box-->
+				</div><!--/.col-->
+
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+					<div class="info-box brown-bg">
+						<i class="fa fa-shopping-cart"></i>
+						<div class="count">7.538</div>
+						<div class="title">Purchased</div>
+					</div><!--/.info-box-->
+				</div><!--/.col-->
+
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+					<div class="info-box green-bg">
+						<i class="glyphicon glyphicon-hourglass" aria-hidden="true"></i>
+						<div class="count">2000</div>
+						<div class="title">Thermostat Idle Time</div>
+					</div><!--/.info-box-->
+				</div><!--/.col-->
+
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+					<div class="info-box green-bg">
+						<i class="fa fa-thermometer-three-quarters" aria-hidden="true"></i>
+                        <div class="count">
+                          <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1"  id="spaThermostatTemp" >
+                        </div>
+					    <div class="title">Thermostat Idle Time</div>
+              <script>
+                 jQuery('#spaThermostatTemp').change( function(){
+                       socket.emit('updateSpaThermostatTemp',jQuery('#spaThermostatTemp').val() );
+                       });
+              </script>
+					</div><!--/.info-box-->
+				</div><!--/.col-->
+
+
+
+			</div><!--/.row-->
+
+
+      <div class="row">
+        <div class="col-sm-4">
+          <h3>Column 1</h3>
+          <p>Lorem ipsum dolor..</p>
+          <p>Ut enim ad..</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Column 2</h3>
+          <p>Lorem ipsum dolor..</p>
+          <p>Ut enim ad..</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Column 3</h3>
+          <p>Lorem ipsum dolor..</p>
+          <p>Ut enim ad..</p>
+
+          <form class="form-horizontal">
+  <div class="input-group">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+    <input id="email" type="text" class="form-control" name="email" placeholder="Email">
+  </div>
+          </form>
+
+<button type="button" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon glyphicon-off" aria-hidden="true"></span> Shutdown
+</button>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>
