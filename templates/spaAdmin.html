@@ -47,48 +47,139 @@
 
 			  <div class="row">
 				<div class="col-lg-12">
-					<h3 class="page-header"><i class="fa fa-microchip" aria-hidden="true"></i> Dashboard</h3>
+					<h3 class="page-header"><i class="fa fa-microchip" aria-hidden="true"></i> Controller Dashboard</h3>
 				</div>
 			</div>
 
             <div class="row">
-				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-					<div class="info-box blue-bg">
-						<i class="fa fa-cloud-download"></i>
-						<div class="count">6.674</div>
-						<div class="title">Download</div>
-					</div><!--/.info-box-->
+
+
+        <div class="col-lg-4 col-md-4  col-sm-12 col-xs-12">
+          <div class="panel  blue-bg">
+            <div class="panel-heading">
+              <h3><i class="fa fa-cog "></i><strong> Status</strong></h3>
+            </div>
+            <div class="panel-actions">
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1 fa-1x">
+                   <span class="fa fa-thermometer-quarter fa-fw" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Spa Temprature" aria-describedby="basic-addon1" id="spaTemp" >
+              </div>
+
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1 fa-1x">
+                   <span class="fa fa-circle-o fa-fw" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Spa Pump" aria-describedby="basic-addon1" id="pump" >
+              </div>
+
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1 fa-1x">
+                   <span class="fa fa-circle-o fa-fw" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Spa Bubbles" aria-describedby="basic-addon1" id="bubbles" >
+              </div>
+
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1 fa-1x">
+                   <span class="fa fa-circle-o fa-fw" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Spa Light" aria-describedby="basic-addon1" id="light" >
+              </div>
+
+
+            </div>
+          </div>
 				</div><!--/.col-->
 
-				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-					<div class="info-box brown-bg">
-						<i class="fa fa-shopping-cart"></i>
-						<div class="count">7.538</div>
-						<div class="title">Purchased</div>
-					</div><!--/.info-box-->
+				<div class="col-lg-4 col-md-4  col-sm-12 col-xs-12" >
+          <div class="panel  green-bg" >
+            <div class="panel-heading">
+              <h3><i class="fa fa-cog "></i><strong> Server</strong></h3>
+            </div>
+            <div class="panel-actions">
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1 fa-1x">
+                   <span class="fa fa-wifi fa-fw" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="SSID" aria-describedby="basic-addon1" id="cSSID" >
+              </div>
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1 fa-1x">
+                   <span class="fa fa-server fa-fw" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="MQTT Server" aria-describedby="basic-addon1" id="cServer" >
+              </div>
+              <div class="input-group input-sm">
+              </div>
+              <div class="input-group input-sm">
+              </div>
+              <div class="input-group input-sm">
+              </div>
+
+            </div>
+          </div>
 				</div><!--/.col-->
 
-				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-					<div class="info-box green-bg">
-						<i class="glyphicon glyphicon-hourglass" aria-hidden="true"></i>
-						<div class="count">2000</div>
-						<div class="title">Thermostat Idle Time</div>
-					</div><!--/.info-box-->
-				</div><!--/.col-->
+				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 
-				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-					<div class="info-box green-bg">
-						<i class="fa fa-thermometer-three-quarters" aria-hidden="true"></i>
-                        <div class="count">
-                          <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1"  id="spaThermostatTemp" >
-                        </div>
-					    <div class="title">Thermostat Idle Time</div>
+					<div class="panel  green-bg">
+            <div class="panel-heading">
+              <h3><i class="fa fa-cog "></i><strong> Thermostat</strong></h3>
+            </div>
+
+            <div class="panel-actions">
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1 fa-1x">
+                   <span class="fa fa-thermometer-quarter fa-fw" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Spa Temp" aria-describedby="basic-addon1" id="spaThermostatTemp" >
+              </div>
               <script>
                  jQuery('#spaThermostatTemp').change( function(){
                        socket.emit('updateSpaThermostatTemp',jQuery('#spaThermostatTemp').val() );
                        });
               </script>
-					</div><!--/.info-box-->
+
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1">
+                   <span class="glyphicon glyphicon-hourglass fa-fw" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Idle Time" aria-describedby="basic-addon1" id="spaThermoIdleTime" >
+              </div>
+              <script>
+                 jQuery('#spaThermoIdleTime').change( function(){
+                       socket.emit('updatespaThermoIdleTime',jQuery('#spaThermoIdleTime').val() );
+                       });
+              </script>
+
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1">
+                   <span class="glyphicon glyphicon-hourglass fa-fw " aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Sample Time" aria-describedby="basic-addon1" id="spaThermoSampleTime" >
+              </div>
+              <script>
+                 jQuery('#spaThermoSampleTime').change( function(){
+                       socket.emit('updatespaThermoSampleTime',jQuery('#spaThermoSampleTime').val() );
+                       });
+              </script>
+
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1">
+                   <span class="glyphicon glyphicon-hourglass fa-fw" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Therm Poll Time" aria-describedby="basic-addon1" id="spaThermPollTime" >
+              </div>
+              <script>
+                 jQuery('#spaThermPollTime').change( function(){
+                       socket.emit('updatespaThermPollTime',jQuery('#spaThermPollTime').val() );
+                       });
+              </script>
+            </div>
+
+          </div>
 				</div><!--/.col-->
 
 
@@ -97,32 +188,9 @@
 
 
       <div class="row">
-        <div class="col-sm-4">
-          <h3>Column 1</h3>
-          <p>Lorem ipsum dolor..</p>
-          <p>Ut enim ad..</p>
-        </div>
-        <div class="col-sm-4">
-          <h3>Column 2</h3>
-          <p>Lorem ipsum dolor..</p>
-          <p>Ut enim ad..</p>
-        </div>
-        <div class="col-sm-4">
-          <h3>Column 3</h3>
-          <p>Lorem ipsum dolor..</p>
-          <p>Ut enim ad..</p>
-
-          <form class="form-horizontal">
-  <div class="input-group">
-    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-    <input id="email" type="text" class="form-control" name="email" placeholder="Email">
-  </div>
-          </form>
-
-<button type="button" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon glyphicon-off" aria-hidden="true"></span> Shutdown
-</button>
-
+        <div class="col-sm-12">
+            <label for="comment">Log</label>
+            <textarea class="form-control" rows="11" id="comment" style="min-width: 100% "></textarea>
         </div>
       </div>
     </div>
