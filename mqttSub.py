@@ -64,15 +64,20 @@ def on_message(poolTempClient, userdata, msg):
     if ( topicList[0] == myconfig.MQTT_PATH and
          topicList[1] == "poolSpa" and
          topicList[2] == "controllerAck" and
-         topicList[3] == "getStatus" ):		 
+         topicList[3] == "getStatus" ):
 
          # import message and store in redis
-		 
+
 		   jStatus = json.loads( str(msg.payload))
 		   r.set("thermostatSpaTemp", jStatus['iSpaTemp'] )
+		   r.set("thermostatIdleTime", jStatus['iThermoIdleTime'] )
+		   r.set("thermostatSampleTime", jStatus['iThermoSampleTime'] )
+		   r.set("thermometerPollTime", jStatus['iThermPollTime'] )
+		   r.set("SSID", jStatus['cSSid'] )
+		   r.set("MQTTServer", jStatus['cServer'] )
 		   requests.get("http://localhost/api/poolSpaStatusBroadcast/")
 		   logger.info("message processed " )
-	   
+
 		   return
 
 

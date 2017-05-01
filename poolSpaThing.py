@@ -121,6 +121,21 @@ class poolSpaThing(object):
         publish.single( myconfig.MQTT_PATH + "/poolSpa/controllerReq/setSpaTemp/", value, 0, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT,
         auth={'username' : myconfig.MQTT_USER , 'password' : myconfig.MQTT_PASSWORD} )
 
+    def setThermostatIdleTime(self,value):
+        """ mqtt publish changein thermostat Idle Time """
+        publish.single( myconfig.MQTT_PATH + "/poolSpa/controllerReq/setThermoIdleTime/", value, 0, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT,
+        auth={'username' : myconfig.MQTT_USER , 'password' : myconfig.MQTT_PASSWORD} )
+
+    def setThermostatSampleTime(self,value):
+        """ mqtt publish change in thermostat Sample Time """
+        publish.single( myconfig.MQTT_PATH + "/poolSpa/controllerReq/setThermoSampleTime/", value, 0, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT,
+        auth={'username' : myconfig.MQTT_USER , 'password' : myconfig.MQTT_PASSWORD} )
+
+    def setThermometerPollTime(self,value):
+        """ mqtt publish changein thermometer poll time """
+        publish.single( myconfig.MQTT_PATH + "/poolSpa/controllerReq/setThermPollTime/", value, 0, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT,
+        auth={'username' : myconfig.MQTT_USER , 'password' : myconfig.MQTT_PASSWORD} )
+
 
     def thingStatus(self):
         """ return a json object of the current poolSpaThing status """
@@ -129,6 +144,11 @@ class poolSpaThing(object):
                               "spaBubbles":r.get("ackSpaBubbles"),
                               "spaPump":r.get("ackSpaPump"),
                               "spaLights":r.get("ackSpaLights"),
-                              "thermostatSpaTemp":r.get("thermostatSpaTemp")
+                              "SSID":r.get("SSID"),
+                              "MQTTServer":r.get("MQTTServer"),
+                              "thermostatSpaTemp":r.get("thermostatSpaTemp"),
+                              "thermostatIdleTime":r.get("thermostatIdleTime"),
+                              "thermostatSampleTime":r.get("thermostatSampleTime"),
+                              "thermometerPollTime":r.get("thermometerPollTime")
                              }
                           )

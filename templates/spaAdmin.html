@@ -28,6 +28,56 @@
 
             var statusJSON = jQuery.parseJSON(data);
             jQuery('#spaThermostatTemp').val(statusJSON.thermostatSpaTemp);
+            jQuery('#spaThermoIdleTime').val(statusJSON.thermostatIdleTime);
+            jQuery('#spaThermoSampleTime').val(statusJSON.thermostatSampleTime);
+            jQuery('#spaThermPollTime').val(statusJSON.thermometerPollTime);
+            jQuery('#spaTemp').val(statusJSON.spaTemp);
+            jQuery('#spaBubbles').val(statusJSON.spaBubbles);
+            jQuery('#spaPump').val(statusJSON.spaPump);
+            jQuery('#spaLights').val(statusJSON.spaLights);
+            jQuery('#SSID').val(statusJSON.SSID);
+            jQuery('#MQTTServer').val(statusJSON.MQTTServer);
+
+            if (jQuery('#spaPump').val()=="on"){
+              jQuery('#pumpIcon').removeClass("fa-circle-o");
+              jQuery('#pumpIcon').addClass("fa-circle");
+            }
+            else{
+              jQuery('#pumpIcon').removeClass("fa-circle");
+              jQuery('#pumpIcon').addClass("fa-circle-o");
+            }
+
+            if (jQuery('#spaBubbles').val()=="on"){
+              jQuery('#bubblesIcon').removeClass("fa-circle-o");
+              jQuery('#bubblesIcon').addClass("fa-circle");
+            }
+            else{
+              jQuery('#bubblesIcon').removeClass("fa-circle");
+              jQuery('#bubblesIcon').addClass("fa-circle-o");
+            }
+
+            if (jQuery('#spaLights').val()=="on"){
+              jQuery('#lightsIcon').removeClass("fa-circle-o");
+              jQuery('#lightsIcon').addClass("fa-circle");
+            }
+            else{
+              jQuery('#lightsIcon').removeClass("fa-circle");
+              jQuery('#lightsIcon').addClass("fa-circle-o");
+            }
+
+
+        })
+
+        socket.on('poolSpaLoggerUpdate', function(data) {
+
+        //var statusJSON = jQuery.parseJSON(data);
+        //jQuery('#tdSpaTemp').html(data);
+          var logTextArea =  document.getElementById("logger");
+
+          logTextArea.value += data+"\n";
+
+          if (document.getElementById("Scroll").checked == true)
+              logTextArea.scrollTop = logTextArea.scrollHeight;
 
 
         })
@@ -54,13 +104,88 @@
             <div class="row">
 
 
+
+				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+					<div class="panel  orange-bg">
+            <div class="panel-heading">
+              <h3><i class="fa fa-cog "></i><strong> Thermostat</strong></h3>
+            </div>
+
+            <div class="panel-actions">
+              <div class="input-group input-sm ">
+                <div class="input-group-addon" id="basic-addon1" style="width:30%" >
+                   Spa Temp
+                </div>
+                <div class="input-group-addon" id="basic-addon1 fa-1x" >
+                   <span class="fa fa-thermometer-quarter fa-fw" aria-hidden="true"></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Spa Temp" aria-describedby="basic-addon1" id="spaThermostatTemp" >
+              </div>
+              <script>
+                 jQuery('#spaThermostatTemp').change( function(){
+                       socket.emit('updateSpaThermostatTemp',jQuery('#spaThermostatTemp').val() );
+                       });
+              </script>
+
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1" style="width:30%">
+                   Idle Time
+                </div>
+                <div class="input-group-addon" id="basic-addon1">
+                   <i class="glyphicon glyphicon-hourglass fa-fw" aria-hidden="true"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Idle Time" aria-describedby="basic-addon1" id="spaThermoIdleTime" >
+              </div>
+              <script>
+                 jQuery('#spaThermoIdleTime').change( function(){
+                       socket.emit('updateThermostatIdleTime',jQuery('#spaThermoIdleTime').val() );
+                       });
+              </script>
+
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1" style="width:30%">
+                   Sample Time
+                </div>
+                <div class="input-group-addon" id="basic-addon1">
+                   <span class="glyphicon glyphicon-hourglass fa-fw " aria-hidden="true"></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Sample Time" aria-describedby="basic-addon1" id="spaThermoSampleTime" >
+              </div>
+              <script>
+                 jQuery('#spaThermoSampleTime').change( function(){
+                       socket.emit('updateThermostatSampleTime',jQuery('#spaThermoSampleTime').val() );
+                       });
+              </script>
+
+              <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1" style="width:30%">
+                   Therm Poll Time
+                </div>
+                <div class="input-group-addon" id="basic-addon1">
+                   <span class="glyphicon glyphicon-hourglass fa-fw" aria-hidden="true"></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Therm Poll Time" aria-describedby="basic-addon1" id="spaThermPollTime" >
+              </div>
+              <script>
+                 jQuery('#spaThermPollTime').change( function(){
+                       socket.emit('updateThermometerPollTime',jQuery('#spaThermPollTime').val() );
+                       });
+              </script>
+            </div>
+
+          </div>
+				</div><!--/.col-->
+
         <div class="col-lg-4 col-md-4  col-sm-12 col-xs-12">
           <div class="panel  blue-bg">
             <div class="panel-heading">
-              <h3><i class="fa fa-cog "></i><strong> Status</strong></h3>
+              <h3><i class="fa fa-cog "></i><strong> Spa Status</strong></h3>
             </div>
             <div class="panel-actions">
               <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1" style="width:30%" >Actual Temp</div>
+
                 <div class="input-group-addon" id="basic-addon1 fa-1x">
                    <span class="fa fa-thermometer-quarter fa-fw" aria-hidden="true"></i>
                 </div>
@@ -68,24 +193,28 @@
               </div>
 
               <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1" style="width:30%" >Pump</div>
+
                 <div class="input-group-addon" id="basic-addon1 fa-1x">
-                   <span class="fa fa-circle-o fa-fw" aria-hidden="true"></i>
+                   <span class="fa fa-circle-o fa-fw" aria-hidden="true" id="pumpIcon"></span>
                 </div>
-                <input type="text" class="form-control" placeholder="Spa Pump" aria-describedby="basic-addon1" id="pump" >
+                <input type="text" class="form-control" placeholder="Spa Pump" aria-describedby="basic-addon1" id="spaPump" >
               </div>
 
               <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1" style="width:30%" >Bubbles</div>
                 <div class="input-group-addon" id="basic-addon1 fa-1x">
-                   <span class="fa fa-circle-o fa-fw" aria-hidden="true"></i>
+                   <span class="fa fa-circle-o fa-fw" aria-hidden="true" id="bubblesIcon"></span>
                 </div>
-                <input type="text" class="form-control" placeholder="Spa Bubbles" aria-describedby="basic-addon1" id="bubbles" >
+                <input type="text" class="form-control" placeholder="Spa Bubbles" aria-describedby="basic-addon1" id="spaBubbles" >
               </div>
 
               <div class="input-group input-sm">
+                <div class="input-group-addon" id="basic-addon1" style="width:30%" >Lights</div>
                 <div class="input-group-addon" id="basic-addon1 fa-1x">
-                   <span class="fa fa-circle-o fa-fw" aria-hidden="true"></i>
+                   <span class="fa fa-circle-o fa-fw" aria-hidden="true" id="lightsIcon"></span>
                 </div>
-                <input type="text" class="form-control" placeholder="Spa Light" aria-describedby="basic-addon1" id="light" >
+                <input type="text" class="form-control" placeholder="Spa Light" aria-describedby="basic-addon1" id="spaLights" >
               </div>
 
 
@@ -103,13 +232,13 @@
                 <div class="input-group-addon" id="basic-addon1 fa-1x">
                    <span class="fa fa-wifi fa-fw" aria-hidden="true"></i>
                 </div>
-                <input type="text" class="form-control" placeholder="SSID" aria-describedby="basic-addon1" id="cSSID" >
+                <input type="text" class="form-control" placeholder="SSID" aria-describedby="basic-addon1" id="SSID" >
               </div>
               <div class="input-group input-sm">
                 <div class="input-group-addon" id="basic-addon1 fa-1x">
                    <span class="fa fa-server fa-fw" aria-hidden="true"></i>
                 </div>
-                <input type="text" class="form-control" placeholder="MQTT Server" aria-describedby="basic-addon1" id="cServer" >
+                <input type="text" class="form-control" placeholder="MQTT Server" aria-describedby="basic-addon1" id="MQTTServer" >
               </div>
               <div class="input-group input-sm">
               </div>
@@ -119,66 +248,6 @@
               </div>
 
             </div>
-          </div>
-				</div><!--/.col-->
-
-				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-
-					<div class="panel  green-bg">
-            <div class="panel-heading">
-              <h3><i class="fa fa-cog "></i><strong> Thermostat</strong></h3>
-            </div>
-
-            <div class="panel-actions">
-              <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1 fa-1x">
-                   <span class="fa fa-thermometer-quarter fa-fw" aria-hidden="true"></i>
-                </div>
-                <input type="text" class="form-control" placeholder="Spa Temp" aria-describedby="basic-addon1" id="spaThermostatTemp" >
-              </div>
-              <script>
-                 jQuery('#spaThermostatTemp').change( function(){
-                       socket.emit('updateSpaThermostatTemp',jQuery('#spaThermostatTemp').val() );
-                       });
-              </script>
-
-              <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1">
-                   <span class="glyphicon glyphicon-hourglass fa-fw" aria-hidden="true"></i>
-                </div>
-                <input type="text" class="form-control" placeholder="Idle Time" aria-describedby="basic-addon1" id="spaThermoIdleTime" >
-              </div>
-              <script>
-                 jQuery('#spaThermoIdleTime').change( function(){
-                       socket.emit('updatespaThermoIdleTime',jQuery('#spaThermoIdleTime').val() );
-                       });
-              </script>
-
-              <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1">
-                   <span class="glyphicon glyphicon-hourglass fa-fw " aria-hidden="true"></i>
-                </div>
-                <input type="text" class="form-control" placeholder="Sample Time" aria-describedby="basic-addon1" id="spaThermoSampleTime" >
-              </div>
-              <script>
-                 jQuery('#spaThermoSampleTime').change( function(){
-                       socket.emit('updatespaThermoSampleTime',jQuery('#spaThermoSampleTime').val() );
-                       });
-              </script>
-
-              <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1">
-                   <span class="glyphicon glyphicon-hourglass fa-fw" aria-hidden="true"></i>
-                </div>
-                <input type="text" class="form-control" placeholder="Therm Poll Time" aria-describedby="basic-addon1" id="spaThermPollTime" >
-              </div>
-              <script>
-                 jQuery('#spaThermPollTime').change( function(){
-                       socket.emit('updatespaThermPollTime',jQuery('#spaThermPollTime').val() );
-                       });
-              </script>
-            </div>
-
           </div>
 				</div><!--/.col-->
 
@@ -189,8 +258,15 @@
 
       <div class="row">
         <div class="col-sm-12">
-            <label for="comment">Log</label>
-            <textarea class="form-control" rows="11" id="comment" style="min-width: 100% "></textarea>
+          <div class="panel  gray-bg">
+            <div class="panel-heading">
+              <h3><i class="fa fa-cog "></i><strong> Logs</strong></h3>
+            </div>
+            <div class="panel-actions">
+              <textarea class="form-control" rows="10"  style="min-width: 100% " id="logger"></textarea>
+            </div>
+            <input type="checkbox" aria-label="..." id="Scroll" > Scroll
+
         </div>
       </div>
     </div>

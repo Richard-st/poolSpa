@@ -67,5 +67,24 @@ def updateSpaThermostatTemp(iSpaThermostatTemp):
         print('received data: ' + str(iSpaThermostatTemp))
         return "1"
 
+@socketio.on('updateThermostatIdleTime')
+def updateThermostatIdleTime(iThermostatIdleTime):
+        myPoolSpaThing.setThermostatIdleTime(iThermostatIdleTime)
+        print('received data: ' + str(iThermostatIdleTime))
+        return "1"
+
+@socketio.on('updateThermostatSampleTime')
+def updateThermostatSampleTime(iThermostatSampleTime):
+        myPoolSpaThing.setThermostatSampleTime(iThermostatSampleTime)
+        print('received data: ' + str(iThermostatSampleTime))
+        return "1"
+
+@socketio.on('updateThermometerPollTime')
+def updateThermometerPollTime(iThermometerPollTime):
+        myPoolSpaThing.setThermometerPollTime(iThermometerPollTime)
+        print('received data: ' + str(iThermometerPollTime))
+        return "1"
+
+
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0',debug=True, port=80)
