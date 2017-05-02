@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Spa Pool Controller</title>
+    <link rel="shortcut icon" href="static/image/settings-512.png">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -27,10 +28,19 @@
         socket.on('poolSpaStatusUpdate', function(data) {
 
             var statusJSON = jQuery.parseJSON(data);
-            jQuery('#spaThermostatTemp').val(statusJSON.thermostatSpaTemp);
-            jQuery('#spaThermoIdleTime').val(statusJSON.thermostatIdleTime);
-            jQuery('#spaThermoSampleTime').val(statusJSON.thermostatSampleTime);
-            jQuery('#spaThermPollTime').val(statusJSON.thermometerPollTime);
+
+            if (! jQuery("#spaThermostatTemp").is(":focus") )
+                jQuery('#spaThermostatTemp').val(statusJSON.thermostatSpaTemp);
+
+            if (! jQuery("#spaThermoIdleTime").is(":focus") )
+                jQuery('#spaThermoIdleTime').val(statusJSON.thermostatIdleTime);
+
+            if (! jQuery("#spaThermoSampleTime").is(":focus") )
+                jQuery('#spaThermoSampleTime').val(statusJSON.thermostatSampleTime);
+
+            if (! jQuery("#spaThermPollTime").is(":focus") )
+                jQuery('#spaThermPollTime').val(statusJSON.thermometerPollTime);
+
             jQuery('#spaTemp').val(statusJSON.spaTemp);
             jQuery('#spaBubbles').val(statusJSON.spaBubbles);
             jQuery('#spaPump').val(statusJSON.spaPump);
@@ -114,8 +124,8 @@
 
             <div class="panel-actions">
               <div class="input-group input-sm ">
-                <div class="input-group-addon" id="basic-addon1" style="width:30%" >
-                   Spa Temp
+                <div class="input-group-addon " id="basic-addon1" style="width:50%;text-align:left " >
+                   Spa Temp Setting
                 </div>
                 <div class="input-group-addon" id="basic-addon1 fa-1x" >
                    <span class="fa fa-thermometer-quarter fa-fw" aria-hidden="true"></span>
@@ -128,9 +138,9 @@
                        });
               </script>
 
-              <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1" style="width:30%">
-                   Idle Time
+              <div class="input-group input-sm ">
+                <div class="input-group-addon " id="basic-addon1" style="width:50% ;text-align:left ">
+                   Spa Idle Time
                 </div>
                 <div class="input-group-addon" id="basic-addon1">
                    <i class="glyphicon glyphicon-hourglass fa-fw" aria-hidden="true"></i>
@@ -144,8 +154,8 @@
               </script>
 
               <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1" style="width:30%">
-                   Sample Time
+                <div class="input-group-addon" id="basic-addon1" style="width:50%;text-align:left ">
+                   Spa Sample Time
                 </div>
                 <div class="input-group-addon" id="basic-addon1">
                    <span class="glyphicon glyphicon-hourglass fa-fw " aria-hidden="true"></span>
@@ -159,7 +169,7 @@
               </script>
 
               <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1" style="width:30%">
+                <div class="input-group-addon" id="basic-addon1" style="width:50%;text-align:left ">
                    Therm Poll Time
                 </div>
                 <div class="input-group-addon" id="basic-addon1">
@@ -184,7 +194,7 @@
             </div>
             <div class="panel-actions">
               <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1" style="width:30%" >Actual Temp</div>
+                <div class="input-group-addon" id="basic-addon1" style="width:40%;text-align:left " >Actual Temp</div>
 
                 <div class="input-group-addon" id="basic-addon1 fa-1x">
                    <span class="fa fa-thermometer-quarter fa-fw" aria-hidden="true"></i>
@@ -193,7 +203,7 @@
               </div>
 
               <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1" style="width:30%" >Pump</div>
+                <div class="input-group-addon" id="basic-addon1" style="width:40%;text-align:left " >Pump</div>
 
                 <div class="input-group-addon" id="basic-addon1 fa-1x">
                    <span class="fa fa-circle-o fa-fw" aria-hidden="true" id="pumpIcon"></span>
@@ -202,7 +212,7 @@
               </div>
 
               <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1" style="width:30%" >Bubbles</div>
+                <div class="input-group-addon" id="basic-addon1" style="width:40%;text-align:left " >Bubbles</div>
                 <div class="input-group-addon" id="basic-addon1 fa-1x">
                    <span class="fa fa-circle-o fa-fw" aria-hidden="true" id="bubblesIcon"></span>
                 </div>
@@ -210,7 +220,7 @@
               </div>
 
               <div class="input-group input-sm">
-                <div class="input-group-addon" id="basic-addon1" style="width:30%" >Lights</div>
+                <div class="input-group-addon" id="basic-addon1" style="width:40%;text-align:left " >Lights</div>
                 <div class="input-group-addon" id="basic-addon1 fa-1x">
                    <span class="fa fa-circle-o fa-fw" aria-hidden="true" id="lightsIcon"></span>
                 </div>
