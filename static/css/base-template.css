@@ -1,0 +1,25 @@
+body {
+  padding-top: 50px;
+}
+.base-template {
+  padding: 5px 5px;
+  text-align: center;
+}
+
+
+@media screen and (min-width: 641px) {
+        .temprature-font {
+    font-size:160px;
+    }
+}
+
+@media screen and (max-width: 640px) {
+        .temprature-font {
+    font-size:100px;
+    }
+}
+
+.panel-body {
+    margin: 0;
+    padding: 0;
+}

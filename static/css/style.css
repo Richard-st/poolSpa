@@ -155,7 +155,12 @@
   background : #57889c;
 
   background-color : #57889c;
+}
 
+.weather-blue-bg {
+  color: #FDF200;
+  background: #69D2E7;
+  background-color: #69D2E7;
 }
 
 .green-bg {
@@ -294,7 +299,7 @@
 
   background: #00aced;
 
-  background-color : #00aced; 
+  background-color : #00aced;
 
 }
 
@@ -304,6 +309,6 @@
 
   background: #4875b4;
 
-  background-color : #4875b4;  
+  background-color : #4875b4;
 
 }

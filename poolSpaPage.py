@@ -24,6 +24,11 @@ def logPage():
 def adminPage():
     return render_template('spaAdmin.html', spaTemp = myPoolSpaThing.getSpaTempInt() , poolTemp = myPoolSpaThing.getPoolTempInt() )
 
+@app.route('/new')
+
+def newPage():
+    return render_template('spaController0.html', spaTemp = myPoolSpaThing.getSpaTempInt() , poolTemp = myPoolSpaThing.getPoolTempInt() )
+
 
 
 @app.route('/api/wunderground/')
