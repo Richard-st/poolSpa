@@ -66,6 +66,12 @@ def toggleSpaPump():
         myPoolSpaThing.toggleSpaPump(request.remote_addr)
         return "1"
 
+@socketio.on('toggleSpaOnOffButton')
+def toggleSpaOnOffButton():
+        myPoolSpaThing.toggleSpaOnOffButton(request.remote_addr)
+        return "1"
+
+
 @socketio.on('updateSpaThermostatTemp')
 def updateSpaThermostatTemp(iSpaThermostatTemp):
         myPoolSpaThing.setThermostatSpaTemp(iSpaThermostatTemp)

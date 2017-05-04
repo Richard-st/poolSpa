@@ -14,16 +14,98 @@
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- socketio -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+
     <!-- Custom styles for this template -->
     <link href="static/css/base-template.css" rel="stylesheet">
     <link href="static/css/style.css" rel="stylesheet" />
+    <link href="static/css/spa-colours.css" rel="stylesheet" />
+
+    <!-- Load Weather Underground -->
+    <script type="text/javascript">
+       jQuery(document).ready(function loadWeather() {
+          jQuery.ajax({
+            url: "{{ url_for ('wunderground') }}" ,
+            type: "GET",
+            success: function(data) {
+              var weatherJSON = jQuery.parseJSON(data);
+
+              jQuery('#weatherDay1').html(weatherJSON.forecast.simpleforecast.forecastday[0].date.weekday + " " + weatherJSON.forecast.simpleforecast.forecastday[0].date.day + "/" + weatherJSON.forecast.simpleforecast.forecastday[0].date.month);
+              jQuery('#weatherDay2').html(weatherJSON.forecast.simpleforecast.forecastday[1].date.weekday + " " + weatherJSON.forecast.simpleforecast.forecastday[1].date.day + "/" + weatherJSON.forecast.simpleforecast.forecastday[1].date.month);
+              jQuery('#weatherDay3').html(weatherJSON.forecast.simpleforecast.forecastday[2].date.weekday + " " + weatherJSON.forecast.simpleforecast.forecastday[2].date.day + "/" + weatherJSON.forecast.simpleforecast.forecastday[2].date.month);
+
+              jQuery('#weatherTemp1H').html(weatherJSON.forecast.simpleforecast.forecastday[0].high.celsius);
+              jQuery('#weatherTemp1L').html(weatherJSON.forecast.simpleforecast.forecastday[0].low.celsius);
+              jQuery('#weatherTemp2H').html(weatherJSON.forecast.simpleforecast.forecastday[1].high.celsius);
+              jQuery('#weatherTemp2L').html(weatherJSON.forecast.simpleforecast.forecastday[1].low.celsius);
+              jQuery('#weatherTemp3H').html(weatherJSON.forecast.simpleforecast.forecastday[2].high.celsius);
+              jQuery('#weatherTemp3L').html(weatherJSON.forecast.simpleforecast.forecastday[2].low.celsius);
+
+
+              jQuery('#weatherIcon1D').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[0].icon+'.gif');
+              jQuery('#weatherIcon1D1').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[0].icon+'.gif');
+              jQuery('#weatherIcon1N').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[1].icon+'.gif');
+              jQuery('#weatherIcon1N1').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[1].icon+'.gif');
+              jQuery('#weatherIcon2D').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[2].icon+'.gif');
+              jQuery('#weatherIcon2N').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[3].icon+'.gif');
+              jQuery('#weatherIcon3D').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[4].icon+'.gif');
+              jQuery('#weatherIcon3N').attr('src','http://icons.wxug.com/i/c/i/'+weatherJSON.forecast.txt_forecast.forecastday[5].icon+'.gif');
+
+              jQuery('#weatherCondition1').html(weatherJSON.forecast.simpleforecast.forecastday[0].conditions);
+              jQuery('#weatherCondition2').html(weatherJSON.forecast.simpleforecast.forecastday[1].conditions);
+              jQuery('#weatherCondition3').html(weatherJSON.forecast.simpleforecast.forecastday[2].conditions);
+
+
+            }
+          });
+          $.post('/api/poolSpaStatusBroadcast/');
+       });
+
+    </script>
+
+    <!-- Controller Buttons -->
+
+    <script type="text/javascript" charset="utf-8">
+        var socket = io.connect();
+        socket.on('connect', function() {
+            console.log('Connected');
+        });
+
+        socket.on('poolSpaStatusUpdate', function(data) {
+
+            var statusJSON = jQuery.parseJSON(data);
+            jQuery('#tdSpaTemp').html(statusJSON.spaTemp);
+            jQuery('#tdPoolTemp').html(statusJSON.poolTemp);
+
+            if ( (statusJSON.spaBubbles) == 'on')
+              jQuery('#spaBubblesButton').attr('src', ' {{ url_for('static', filename='image/button-bubbles-on.png') }} ' );
+            else
+              jQuery('#spaBubblesButton').attr('src', ' {{ url_for('static', filename='image/button-bubbles-off.png') }} ' );
+
+            if ( (statusJSON.spaLights) == 'on')
+              jQuery('#spaLightButton').attr('src', ' {{ url_for('static', filename='image/button-light-on.png') }} ' );
+            else
+              jQuery('#spaLightButton').attr('src', ' {{ url_for('static', filename='image/button-light-off.png') }} ' );
+
+            if ( (statusJSON.spaPump) == 'on')
+              jQuery('#spaWhirlButton').attr('src', ' {{ url_for('static', filename='image/button-whirl-on.png') }} ' );
+            else
+              jQuery('#spaWhirlButton').attr('src', ' {{ url_for('static', filename='image/button-whirl-off.png') }} ' );
+        })
+
+
+    </script>
 
 
   </head>
 
-  <body>
+  <body class="body-colour">
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top ">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -54,26 +136,26 @@
         <!-- Weather Box 1-->
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="panel-group ">
-              <div class="panel weather-blue-bg">
+              <div class="panel weather-colour">
                 <div class="panel-body ">
-                  <h4 class="text-center"> <strong> Wednesday 3/5</strong> </h4>
+                  <h4 id=weatherDay1 class="text-center"> <strong> </strong> </h4>
                 </div>
                 <div class="panel-body">
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>1</strong> </h4>
+                    <h4 id=weatherTemp1H class="text-center"> <strong></strong> </h4>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>2</strong> </h4>
+                    <img id=weatherIcon1D class="imgIcon"/>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>3</strong> </h4>
+                    <h4  id=weatherTemp1L class="text-center"> <strong></strong> </h4>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>4</strong> </h4>
+                    <img id=weatherIcon1N class="imgIcon"/>
                   </div>
                 </div>
                 <div class="panel-body">
-                  <h4 class="text-center"> <strong> Rain</strong> </h4>
+                  <h4 id=weatherCondition1 class="text-center"> <strong> </strong> </h4>
                 </div>
               </div>
             </div>
@@ -82,26 +164,26 @@
           <!-- Weather Box 2-->
           <div class="col-lg-4 col-md-4 col-sm-6 hidden-xs">
             <div class="panel-group ">
-              <div class="panel weather-blue-bg">
+              <div class="panel weather-colour">
                 <div class="panel-body ">
-                  <h4 class="text-center"> <strong> Wednesday 3/5</strong> </h4>
+                  <h4 id=weatherDay2 class="text-center"> <strong> </strong> </h4>
                 </div>
                 <div class="panel-body">
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>1</strong> </h4>
+                    <h4  id=weatherTemp2H class="text-center"> <strong></strong> </h4>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>2</strong> </h4>
+                    <img id=weatherIcon2D class="imgIcon"/>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>3</strong> </h4>
+                    <h4 id=weatherTemp2L class="text-center"> <strong></strong> </h4>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>4</strong> </h4>
+                    <img id=weatherIcon2N class="imgIcon"/>
                   </div>
                 </div>
                 <div class="panel-body">
-                  <h4 class="text-center"> <strong> Rain</strong> </h4>
+                  <h4 id=weatherCondition2 class="text-center"> <strong> </strong> </h4>
                 </div>
               </div>
             </div>
@@ -110,26 +192,26 @@
           <!-- Weather Box 3-->
           <div class="col-lg-4 col-md-4 hidden-sm hidden-xs">
             <div class="panel-group ">
-              <div class="panel weather-blue-bg">
+              <div class="panel weather-colour">
                 <div class="panel-body ">
-                  <h4 class="text-center"> <strong> Wednesday 3/5</strong> </h4>
+                  <h4 id=weatherDay3 class="text-center"> <strong></strong> </h4>
                 </div>
                 <div class="panel-body">
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>1</strong> </h4>
+                    <h4 id=weatherTemp3H class="text-center"></h4>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>2</strong> </h4>
+                    <img id=weatherIcon3D class="imgIcon"/>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>3</strong> </h4>
+                    <h4 id=weatherTemp3L class="text-center"> <strong></strong> </h4>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <h4 class="text-center"> <strong>4</strong> </h4>
+                    <img id=weatherIcon3N class="imgIcon"/>
                   </div>
                 </div>
                 <div class="panel-body">
-                  <h4 class="text-center"> <strong> Rain</strong> </h4>
+                  <h4 id=weatherCondition3 class="text-center"> <strong> </strong> </h4>
                 </div>
               </div>
             </div>
@@ -142,12 +224,12 @@
 
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <div class="panel-group ">
-              <div class="panel weather-blue-bg">
+              <div class="panel body-colour">
                 <div class="panel-body ">
                   <h4 class="text-center" style="font-size: 50px"> <strong> Spa</strong> </h4>
                 </div>
                 <div class="panel-body ">
-                  <span class="text-center temprature-font" >88</span>
+                  <h4 id=tdSpaTemp class="text-center temprature-font" ></h4>
                 </div>
               </div>
             </div>
@@ -155,12 +237,12 @@
 
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <div class="panel-group ">
-              <div class="panel weather-blue-bg">
+              <div class="panel body-colour">
                 <div class="panel-body" >
-                  <h4 class="text-center" > <strong> Pool</strong> </h4>
+                  <h4 class="text-center" style="font-size: 50px"> <strong> Pool</strong> </h4>
                 </div>
                 <div class="panel-body" >
-                  <p class="text-center temprature-font"  >88</p>
+                  <h4 id=tdPoolTemp class="text-center temprature-font"></h4>
                 </div>
               </div>
             </div>
@@ -171,19 +253,34 @@
         <!-- Controllers -->
 			  <div class="row">
           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <div class="panel weather-blue-bg">
-              <img id="spaBubblesButton" class="img-responsive center-block" src="static/image/button-bubbles-off.png" alt="Bubbles" />
+            <div class="panel body-colour">
+              <img id="spaBubblesButton" class="center-block imgSpaButton" src="static/image/button-bubbles-off.png" alt="Bubbles" />
             </div>
+            <script>
+               jQuery('#spaBubblesButton').click(function(){
+                     socket.emit('toggleSpaBubbles');
+                     });
+            </script>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <div class="panel weather-blue-bg">
-              <img id="spaBubblesButton" class="img-responsive center-block" src="static/image/button-bubbles-off.png" alt="Bubbles" />
+            <div class="panel body-colour">
+              <img id="spaLightButton" class="center-block imgSpaButton" src="static/image/button-light-off.png" alt="Bubbles" />
             </div>
+            <script>
+               jQuery('#spaLightButton').click(function(){
+                      socket.emit('toggleSpaLights');
+                      });
+            </script>
           </div>
           <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <div class="panel weather-blue-bg">
-              <img id="spaBubblesButton" class="center-block" src="static/image/button-bubbles-off.png" alt="Bubbles" />
+            <div class="panel body-colour">
+              <img id="spaWhirlButton" class="center-block imgSpaButton" src="static/image/button-whirl-off.png" alt="Bubbles" />
             </div>
+            <script>
+               jQuery('#spaWhirlButton').click(function(){
+                      socket.emit('toggleSpaPump');
+                      });
+            </script>
           </div>
 
         </div> <!-- /.row for controllers -->
@@ -191,8 +288,13 @@
         <!-- On/Off -->
 			  <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <button type="button" class="btn btn-lg btn-block weather-blue-bg">ON / Off</button>
+            <button id=spaOnOffButton   type="button" class="btn btn-lg btn-block weather-colour">ON / Off</button>
           </div>
+          <script>
+             jQuery('#spaOnOffButton').click(function(){
+                    socket.emit('toggleSpaOnOffButton');
+                    });
+          </script>
         </div> <!-- /.row for on/off -->
 
       </div>
@@ -203,7 +305,6 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"><\/script>')</script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 

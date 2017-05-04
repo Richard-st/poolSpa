@@ -1,5 +1,6 @@
 body {
   padding-top: 50px;
+
 }
 .base-template {
   padding: 5px 5px;
@@ -8,18 +9,73 @@ body {
 
 
 @media screen and (min-width: 641px) {
-        .temprature-font {
-    font-size:160px;
+    .temprature-font {
+      font-size:160px;
     }
+    .imgSpaButton{
+      width:180px;
+      height:180px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto
+    }
+
 }
 
 @media screen and (max-width: 640px) {
-        .temprature-font {
-    font-size:100px;
+    .temprature-font {
+      font-size:100px;
     }
+    .imgSpaButton{
+      width:80px;
+      height:80px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .panel-group{
+      margin-bottom : 5px;
+    }
+    .panel{
+      margin-bottom : 5px;
+    }
+
 }
 
 .panel-body {
     margin: 0;
     padding: 0;
+}
+
+.panel{
+  border: 0px solid;
+  box-shadow: 0 1px 1px rgba(0,0,0,0);
+}
+
+h4 {
+  line-height:1;
+  margin-top:0;
+  margin-bottom: 0;
+}
+.imgIcon{
+	height: 40px;
+	width: 40px;
+}
+
+.weather-colour {
+  color: #FDF200;
+  background: #3399ff;
+  background-color : #3399ff;
+}
+
+.body-colour {
+  color: #FDF200;
+  background: #4da6ff;
+  background-color : #4da6ff;
+}
+
+.menu-colour {
+  color: #FDF200;
+  background: #0073e6;
+  background-color : #0073e6;
 }

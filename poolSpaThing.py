@@ -116,6 +116,22 @@ class poolSpaThing(object):
         publish.single(myconfig.MQTT_PATH + "/poolSpa/switchSet/setSpaLights", value, 1, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT ,
         auth={'username' : myconfig.MQTT_USER , 'password' : myconfig.MQTT_PASSWORD} )
 
+
+    def toggleSpaOnOffButton(self,callingIP):
+        """ mqtt call to request spa On or Off """
+        if callingIP.find(myconfig.VALID_IP_MASK , 0 ) < 0:
+           logger.info ("IP["+callingIP+"] Not Authorised")
+           return
+
+        if r.get("ackSpaOnOffButton") == "On":
+           value = "Off"
+        else:
+           value = "On"
+        publish.single(myconfig.MQTT_PATH + "/poolSpa/controllerReq/OnOff/", value, 1, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT ,
+        auth={'username' : myconfig.MQTT_USER , 'password' : myconfig.MQTT_PASSWORD} )
+
+
+
     def setThermostatSpaTemp(self,value):
         """ mqtt publish changein thermostat temperature Values """
         publish.single( myconfig.MQTT_PATH + "/poolSpa/controllerReq/setSpaTemp/", value, 0, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT,

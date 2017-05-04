@@ -1,0 +1,23 @@
+
+
+.weather-colour {
+  color: #FDF200;
+  background: #3399ff;
+  background-color : #3399ff;
+}
+
+.body-colour {
+  color: #FDF200;
+  background: #4da6ff;
+  background-color : #4da6ff;
+}
+
+.navbar-inverse {
+    background-color: #0073e6;
+    border-color: #080808;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    color: #fff;
+    background-color: #004d99;
+}
