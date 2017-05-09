@@ -123,10 +123,10 @@ class poolSpaThing(object):
            logger.info ("IP["+callingIP+"] Not Authorised")
            return
 
-        if r.get("ackSpaOnOffButton") == "On":
-           value = "Off"
+        if r.get("OnOff") == "off":
+           value = "on"
         else:
-           value = "On"
+           value = "off"
         publish.single(myconfig.MQTT_PATH + "/poolSpa/controllerReq/OnOff/", value, 1, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT ,
         auth={'username' : myconfig.MQTT_USER , 'password' : myconfig.MQTT_PASSWORD} )
 
