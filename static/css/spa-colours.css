@@ -21,3 +21,12 @@
     color: #fff;
     background-color: #004d99;
 }
+
+.btn.focus, .btn:focus, .btn:hover {
+    color: #FDF200;
+    text-decoration: none;
+}
+
+.btn{
+  border:2px solid;
+}

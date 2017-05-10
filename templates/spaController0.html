@@ -95,6 +95,11 @@
               jQuery('#spaWhirlButton').attr('src', ' {{ url_for('static', filename='image/button-whirl-on.png') }} ' );
             else
               jQuery('#spaWhirlButton').attr('src', ' {{ url_for('static', filename='image/button-whirl-off.png') }} ' );
+
+              if ( (statusJSON.spaPowerButton) == 'on')
+                jQuery('#spaOnOffButtonText').text("Turn Off");
+              else
+              jQuery('#spaOnOffButtonText').text("Turn On");
         })
 
 
@@ -114,13 +119,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/new">Pool and Spa</a>
+          <h4 class="navbar-brand" >Pool and Spa</h4>
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/new">Home</a></li>
             <li><a href="/admin">Admin</a></li>
-            <li><a href="/new">About</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -135,7 +139,7 @@
 
         <!-- Weather Box 1-->
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="panel-group ">
+            <div class="panel-group " style="border: 2px solid;">
               <div class="panel weather-colour">
                 <div class="panel-body ">
                   <h4 id=weatherDay1 class="text-center"> <strong> </strong> </h4>
@@ -163,7 +167,7 @@
 
           <!-- Weather Box 2-->
           <div class="col-lg-4 col-md-4 col-sm-6 hidden-xs">
-            <div class="panel-group ">
+            <div class="panel-group" style="border: 2px solid;">
               <div class="panel weather-colour">
                 <div class="panel-body ">
                   <h4 id=weatherDay2 class="text-center"> <strong> </strong> </h4>
@@ -191,7 +195,7 @@
 
           <!-- Weather Box 3-->
           <div class="col-lg-4 col-md-4 hidden-sm hidden-xs">
-            <div class="panel-group ">
+            <div class="panel-group" style="border: 2px solid;">
               <div class="panel weather-colour">
                 <div class="panel-body ">
                   <h4 id=weatherDay3 class="text-center"> <strong></strong> </h4>
@@ -288,8 +292,15 @@
         <!-- On/Off -->
 			  <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <button id=spaOnOffButton   type="button" class="btn btn-lg btn-block weather-colour">ON / Off</button>
+            <button id=spaOnOffButton type="button" class="btn btn-block btn-sm weather-colour">
+               <h4 id=spaOnOffButtonText ></h4>
+            </button>
+
+
           </div>
+
+
+
           <script>
              jQuery('#spaOnOffButton').click(function(){
                     socket.emit('toggleSpaOnOffButton');

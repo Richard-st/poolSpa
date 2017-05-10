@@ -165,6 +165,7 @@ class poolSpaThing(object):
                               "thermostatSpaTemp":r.get("thermostatSpaTemp"),
                               "thermostatIdleTime":r.get("thermostatIdleTime"),
                               "thermostatSampleTime":r.get("thermostatSampleTime"),
-                              "thermometerPollTime":r.get("thermometerPollTime")
+                              "thermometerPollTime":r.get("thermometerPollTime"),
+                              "spaPowerButton":r.get("OnOff")
                              }
                           )
