@@ -9,7 +9,7 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 myPoolSpaThing = poolSpaThing.poolSpaThing()
 
-@app.route('/')
+@app.route('/old')
 
 def mainPage():
     return render_template('spaController.html', spaTemp = myPoolSpaThing.getSpaTempInt() , poolTemp = myPoolSpaThing.getPoolTempInt() )
@@ -24,7 +24,7 @@ def logPage():
 def adminPage():
     return render_template('spaAdmin.html', spaTemp = myPoolSpaThing.getSpaTempInt() , poolTemp = myPoolSpaThing.getPoolTempInt() )
 
-@app.route('/new')
+@app.route('/')
 
 def newPage():
     return render_template('spaController0.html', spaTemp = myPoolSpaThing.getSpaTempInt() , poolTemp = myPoolSpaThing.getPoolTempInt() )

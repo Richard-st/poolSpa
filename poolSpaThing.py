@@ -156,6 +156,7 @@ class poolSpaThing(object):
     def thingStatus(self):
         """ return a json object of the current poolSpaThing status """
         return json.dumps ( { "spaTemp":int(round(float(r.get("spaTemp")))),
+                              "spaTempFloat":r.get("spaTemp"),
                               "poolTemp":int(round(float(r.get("poolTemp")))),
                               "spaBubbles":r.get("ackSpaBubbles"),
                               "spaPump":r.get("ackSpaPump"),
