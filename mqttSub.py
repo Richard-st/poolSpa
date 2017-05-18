@@ -53,78 +53,94 @@ def on_message(poolTempClient, userdata, msg):
     #
     # Device logging message
     #
-    if ( topicList[0] == myconfig.MQTT_PATH and
-         topicList[1] == "logger" ):
-         # post log message SocketIO broadcast of status
-         requests.get("http://localhost/api/poolSpaLoggerBroadcast/?logLine=" + str(msg.payload) )
+    try:
+      if ( topicList[0] == myconfig.MQTT_PATH and
+           topicList[1] == "logger" ):
+           # post log message SocketIO broadcast of status
+           requests.get("http://localhost/api/poolSpaLoggerBroadcast/?logLine=" + str(msg.payload) )
+    except:
+      logger.info("failed to send Device logging message" )
+
 
     #
     # Device status message
     #
-    if ( topicList[0] == myconfig.MQTT_PATH and
-         topicList[1] == "poolSpa" and
-         topicList[2] == "controllerAck" and
-         topicList[3] == "getStatus" ):
+    try:
+        if ( topicList[0] == myconfig.MQTT_PATH and
+            topicList[1] == "poolSpa" and
+            topicList[2] == "controllerAck" and
+            topicList[3] == "getStatus" ):
 
          # import message and store in redis
 
-		   jStatus = json.loads( str(msg.payload))
-		   r.set("thermostatSpaTemp", jStatus['iSpaTemp'] )
-		   r.set("thermostatIdleTime", jStatus['iThermoIdleTime'] )
-		   r.set("thermostatSampleTime", jStatus['iThermoSampleTime'] )
-		   r.set("thermometerPollTime", jStatus['iThermPollTime'] )
-		   r.set("SSID", jStatus['cSSid'] )
-		   r.set("MQTTServer", jStatus['cServer'] )
-		   requests.get("http://localhost/api/poolSpaStatusBroadcast/")
-		   logger.info("message processed " )
+		       jStatus = json.loads( str(msg.payload))
+		       r.set("thermostatSpaTemp", jStatus['iSpaTemp'] )
+		       r.set("thermostatIdleTime", jStatus['iThermoIdleTime'] )
+		       r.set("thermostatSampleTime", jStatus['iThermoSampleTime'] )
+		       r.set("thermometerPollTime", jStatus['iThermPollTime'] )
+		       r.set("SSID", jStatus['cSSid'] )
+		       r.set("MQTTServer", jStatus['cServer'] )
+		       requests.get("http://localhost/api/poolSpaStatusBroadcast/")
+		       logger.info("message processed " )
 
-		   return
+		       return
+    except:
+      logger.info("failed to send Device status message " )
+
 
 
 
     #
     # store temp sensor results
     #
-    if ( topicList[0] == myconfig.MQTT_PATH and
-         topicList[1] == "poolSpa" and
-         topicList[2] == "tempSensor" ):
-            # set current temp
-            r.set(topicList[3], str(msg.payload))
+    try:
+      if ( topicList[0] == myconfig.MQTT_PATH and
+          topicList[1] == "poolSpa" and
+          topicList[2] == "tempSensor" ):
+             # set current temp
+             r.set(topicList[3], str(msg.payload))
 
-            # add historic temperature
-            r.lpush(topicList[3]+":history", str(msg.payload) + ":" + str(int(ts))  )
+             # add historic temperature
+             r.lpush(topicList[3]+":history", str(msg.payload) + ":" + str(int(ts))  )
 
-            # push temperature to thingspeak
-            if (topicList[3] == "spaTemp"):
-              requests.get("https://api.thingspeak.com/update?key="+myconfig.THINGSPEAK_API_KEY+"&field1="+str(msg.payload))
+             # push temperature to thingspeak
+             if (topicList[3] == "spaTemp"):
+               requests.get("https://api.thingspeak.com/update?key="+myconfig.THINGSPEAK_API_KEY+"&field1="+str(msg.payload))
 
-            if (topicList[3] == "poolTemp"):
-              requests.get("https://api.thingspeak.com/update?key="+myconfig.THINGSPEAK_API_KEY+"&field2="+str(msg.payload))
+             if (topicList[3] == "poolTemp"):
+               requests.get("https://api.thingspeak.com/update?key="+myconfig.THINGSPEAK_API_KEY+"&field2="+str(msg.payload))
 
-            # post stauts SocketIO broadcast of status
-            requests.get("http://localhost/api/poolSpaStatusBroadcast/")
-            logger.info("message processed " )
-            return
+             # post stauts SocketIO broadcast of status
+             requests.get("http://localhost/api/poolSpaStatusBroadcast/")
+             logger.info("message processed " )
+
+      return
+    except:
+      logger.info("failed to store temp sensor results " )
 
     #
     # store switch acknowledge status
     #
-    if ( topicList[0] == myconfig.MQTT_PATH and
-         topicList[1] == "poolSpa" and
-         topicList[2] == "switchAck" ):
-            # store result in redis
-            r.set(topicList[3], str(msg.payload))
+    try:
+      if ( topicList[0] == myconfig.MQTT_PATH and
+           topicList[1] == "poolSpa" and
+           topicList[2] == "switchAck" ):
+              # store result in redis
+              r.set(topicList[3], str(msg.payload))
 
-            # post stauts SocketIO broadcast of status
-            requests.get("http://localhost/api/poolSpaStatusBroadcast/")
+              # post stauts SocketIO broadcast of status
+              requests.get("http://localhost/api/poolSpaStatusBroadcast/")
 
 
-            logger.info("message processed " )
-            return
-    #
-    # if we are here we can ignore the message
-    #
-    logger.info("message ignored " )
+              logger.info("message processed " )
+              return
+      #
+      # if we are here we can ignore the message
+      #
+      logger.info("message ignored " )
+    except:
+      logger.info("failed to tore switch acknowledge status " )
+
 
 #
 # program body
