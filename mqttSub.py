@@ -114,9 +114,10 @@ def on_message(poolTempClient, userdata, msg):
              requests.get("http://localhost/api/poolSpaStatusBroadcast/")
              logger.info("message processed " )
 
-      return
+             return
     except:
       logger.info("failed to store temp sensor results " )
+
 
     #
     # store switch acknowledge status
@@ -141,6 +142,7 @@ def on_message(poolTempClient, userdata, msg):
     except:
       logger.info("failed to tore switch acknowledge status " )
 
+    logger.info("Debug 4 " )
 
 #
 # program body
