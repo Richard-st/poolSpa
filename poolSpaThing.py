@@ -170,3 +170,26 @@ class poolSpaThing(object):
                               "spaPowerButton":r.get("OnOff")
                              }
                           )
+
+
+    def getAllPoolTemps(self):
+        poolTempValues = r.lrange("poolTemp:history",0,-1)
+
+        # start of json struct
+        json_string = '{"name":"poolStats","temps":['
+        # temps of json struct
+        if len(poolTempValues) > 0:
+            tokenInd=poolTempValues[0].find(":")
+            json_string += ( """ {"temp" : """+poolTempValues [0][:tokenInd]+ """ , "timestamp" : """ + poolTempValues [0][tokenInd+1:]+"}"   )
+
+        for iCount in range( 1,len(poolTempValues)  ):
+            tokenInd=poolTempValues[iCount].find(":")
+            json_string += ","
+            json_string += ( """ {"temp" : """+poolTempValues [iCount][:tokenInd]+ """ , "timestamp" : """ + poolTempValues [iCount][tokenInd+1:]+"}"   )
+
+        # end of json struct
+
+        json_string += """
+        ]
+        }"""
+        return json.dumps ( json.loads(json_string))

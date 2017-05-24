@@ -24,6 +24,12 @@ def logPage():
 def adminPage():
     return render_template('spaAdmin.html', spaTemp = myPoolSpaThing.getSpaTempInt() , poolTemp = myPoolSpaThing.getPoolTempInt() )
 
+@app.route('/pool')
+
+def poolPage():
+    return render_template('poolHistory.html', spaTemp = myPoolSpaThing.getSpaTempInt() , poolTemp = myPoolSpaThing.getPoolTempInt() )
+
+
 @app.route('/')
 
 def newPage():
@@ -95,6 +101,17 @@ def updateThermometerPollTime(iThermometerPollTime):
         myPoolSpaThing.setThermometerPollTime(iThermometerPollTime)
         print('received data: ' + str(iThermometerPollTime))
         return "1"
+
+@socketio.on('getAllPoolTemps')
+def getAllPoolTemps():
+        socketio.emit('poolTempList',myPoolSpaThing.getAllPoolTemps() , broadcast=True)
+        return "1"
+
+@app.route('/api/pool/',methods=['GET','POST'])
+def poolBroadcast():
+         socketio.emit('poolTempList',myPoolSpaThing.getAllPoolTemps() , broadcast=True)
+         return  myPoolSpaThing.getAllPoolTemps()
+
 
 
 if __name__ == '__main__':
