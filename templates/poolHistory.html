@@ -31,63 +31,56 @@
         var tempData = [];
         var dataPoints = [];
         var socket = io.connect();
+        var chart;
+
+        var dataSeries = { type: "line"};
+
+        dataSeries.dataPoints = dataPoints;
+        tempData.push(dataSeries);
+
+
+
         socket.on('connect', function() {
             console.log('Connected');
         });
 
         socket.on('poolTempList', function(data) {
-            //var statusJSON = jQuery.parseJSON(data);
+
             var poolStatusJSON = jQuery.parseJSON(data);
-            var logTextArea =  document.getElementById("logger")
 
-            for (i in poolStatusJSON.temps) {
-              logTextArea.value = logTextArea.value + poolStatusJSON.temps[i].temp;
-              logTextArea.value = logTextArea.value + poolStatusJSON.temps[i].timestamp;
-            }
-
-            var chart = new CanvasJS.Chart("chartContainer",
-            {
-              zoomEnabled: true,
-              title:{
-                text: "Stress Test: 100,000 Data Points"
-              },
-              animationEnabled: true,
-              axisX:{
-                  valueFormatString: "DD-MMM-YYYY HH:mm",
-                  labelAngle: -50
-              },
-
-              axisY :{
-                includeZero:false
-              },
-
-              data: tempData  // random generator below
-
-            });
-            chart.render();
-
+            dataPoints = [];
 
             for (i in poolStatusJSON.temps) {
               dataPoints.push({
                     x:  new Date(poolStatusJSON.temps[i].timestamp*1000),
                     y:  poolStatusJSON.temps[i].temp
               });
+
             }
 
 
+            //dataPoints.push ({options: [{cubicInterpolationMode : "default"}] });
+
             dataSeries.dataPoints = dataPoints;
+
+            dataSeries.lineColor= "#6e5ea2";
+            dataSeries.markerColor= "#6e5ea2";
+
+            tempData = [];
             tempData.push(dataSeries);
+
+            chart.render();
         })
 
 
       window.onload = function () {
 
 
-        var chart = new CanvasJS.Chart("chartContainer",
+        chart = new CanvasJS.Chart("chartContainer",
         {
           zoomEnabled: true,
           title:{
-            text: "Stress Test: 100,000 Data Points"
+            text: "Pool Temperatures"
           },
           animationEnabled: true,
           axisX:{
@@ -99,16 +92,20 @@
             includeZero:false
           },
 
-          data: tempData  // random generator below
+          data: tempData
 
         });
 
-        chart.render();
+        // iosocket to supply current data set
+
+        socket.emit("getAllPoolTemps")
+
+
+
       }
 
-       var dataSeries = { type: "line"};
-      dataSeries.dataPoints = dataPoints;
-      tempData.push(dataSeries);
+
+
 
       </script>
 
@@ -134,7 +131,8 @@
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
           <ul class="nav navbar-nav">
             <li><a href="/">Controller</a></li>
-            <li class="active"><a href="/admin">Admin</a></li>
+            <li class="active"><a href="/pool">Pool</a></li>
+            <li><a href="/admin">Admin</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -142,30 +140,21 @@
 
     <div class="container-fluid">
 
-			  <div class="row">
-				<div class="col-sm-12" st yle="margin-top:5px">
-				</div>
-			</div>
+      <div class="row">
+        <div class="col-sm-12" style="margin-top:30px">
+        </div>
+      </div>
 
 
-     <div class="row">
+		  <div class="row">
+
        <div class="col-sm-12">
-          <div class="panel  blue-bg">
-            <div class="panel-heading">
-              <h4><i class="fa fa-cog "></i><strong> Logs</strong></h4>
-            </div>
-            <div class="panel-actions">
-              <textarea class="form-control" rows="10"  style="min-width: 100% " id="logger"></textarea>
-            </div>
-            <div class="panel-actions">
-              <div id="chartContainer" style="height: 300px; width: 100%;">
-              </div>
-            </div>
-
+         <div id="chartContainer" style="height: 100%; width: 100%;">
         </div>
        </div>
-     </div>
 
+      </div>
+    </div>
 
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->

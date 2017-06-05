@@ -179,10 +179,10 @@ class poolSpaThing(object):
         json_string = '{"name":"poolStats","temps":['
         # temps of json struct
         if len(poolTempValues) > 0:
-            tokenInd=poolTempValues[0].find(":")
-            json_string += ( """ {"temp" : """+poolTempValues [0][:tokenInd]+ """ , "timestamp" : """ + poolTempValues [0][tokenInd+1:]+"}"   )
+            tokenInd=poolTempValues[len(poolTempValues)-1].find(":")
+            json_string += ( """ {"temp" : """+poolTempValues [len(poolTempValues)-1][:tokenInd]+ """ , "timestamp" : """ + poolTempValues [len(poolTempValues)-1][tokenInd+1:]+"}"   )
 
-        for iCount in range( 1,len(poolTempValues)  ):
+        for iCount in xrange(  len(poolTempValues)-2, -1, -1  ):
             tokenInd=poolTempValues[iCount].find(":")
             json_string += ","
             json_string += ( """ {"temp" : """+poolTempValues [iCount][:tokenInd]+ """ , "timestamp" : """ + poolTempValues [iCount][tokenInd+1:]+"}"   )

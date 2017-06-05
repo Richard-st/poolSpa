@@ -109,6 +109,7 @@ def on_message(poolTempClient, userdata, msg):
 
              if (topicList[3] == "poolTemp"):
                requests.get("https://api.thingspeak.com/update?key="+myconfig.THINGSPEAK_API_KEY+"&field2="+str(msg.payload))
+               requests.get("http://localhost/api/pool") #trigger broadcast of new pool temp
 
              # post stauts SocketIO broadcast of status
              requests.get("http://localhost/api/poolSpaStatusBroadcast/")
