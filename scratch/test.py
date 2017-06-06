@@ -1,78 +1,57 @@
 import json
 import redis
+import time
+
+poolStats= {'MaxTempEver': 0   , 'MinTempEver': '999',
+            'SumTempFor1': 0.0 , 'SumFor1' : 0 ,
+            'SumTempFor2': 0.0 , 'SumFor2' : 0 ,
+            'SumTempFor3': 0.0 , 'SumFor3' : 0 ,
+            'SumTempFor4': 0.0 , 'SumFor4' : 0 ,
+            'SumTempFor5': 0.0 , 'SumFor5' : 0 ,
+            'SumTempFor6': 0.0 , 'SumFor6' : 0 ,
+            'SumTempFor7': 0.0 , 'SumFor7' : 0 ,
+            'SumTempFor8': 0.0 , 'SumFor8' : 0 ,
+            'SumTempFor9': 0.0 , 'SumFor9' : 0 ,
+            'SumTempFor10': 0.0 , 'SumFor10' : 0 ,
+            'SumTempFor11': 0.0 , 'SumFor11' : 0 ,
+            'SumTempFor12': 0.0 , 'SumFor12' : 0 }
+sumOfTemps  = 0
 
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
-print ("hello")
-#print (r.llen("poolTemp:history"))
-#print (r.lrange("poolTemp:history",0,-1))
-
 
 poolTempValues = r.lrange("poolTemp:history",0,-1)
 
 
-
-print poolTempValues [0]
-print poolTempValues [1]
-print poolTempValues [2]
-
-tokenInd1=poolTempValues[0].find(":")
-print "temp"
-print poolTempValues [0][:tokenInd1]
-print "timestamp"
-print poolTempValues [0][tokenInd1+1:]
-
-#poolTemps = ( {"temp": poolTempValues [0][:tokenInd1] ,"timestamp" :poolTempValues [0][tokenInd1+1:]  } )
-#poolTemps.append ( {"temp": poolTempValues [0][:tokenInd1] ,"timestamp" :poolTempValues [0][tokenInd1+1:]  } )
-
-#poolJson =  {u"name":"poolStats"}
-#poolJson.update ( {u"temps" : [ poolTemps  ] }  )
-#poolJson.update (poolTemps)
-#poolTemps = ( {"temp": poolTempValues [0][:tokenInd1] ,"timestamp" :poolTempValues [0][tokenInd1+1:]  } )
-
-print ("============")
-
-# start of json struct
-json_string = """
-{
-    "name": "poolStats",
-    "temps":[
-"""
-
-# temps of json struct
-
-#int iTempLength = len(poolTempValues);
-print len(poolTempValues)
-
-print poolTempValues[len(poolTempValues) -1 ]
-
-
-if len(poolTempValues) > 0:
-    json_string += ( """ {"temp" : """+poolTempValues [0][:tokenInd1]+ """ , "timestamp" : """ + poolTempValues [0][tokenInd1+1:]+"}"   )
-
-
-for iCount in range( 1,len(poolTempValues)  ):
-#for iCount in range( 1,2 ):
+for iCount in range( 0,len(poolTempValues)  ):
     tokenInd=poolTempValues[iCount].find(":")
-    json_string += ","
-    json_string += ( """ {"temp" : """+poolTempValues [iCount][:tokenInd]+ """ , "timestamp" : """ + poolTempValues [iCount][tokenInd+1:]+"}"   )
 
-# end of json struct
+    tempDateTime = time.localtime(float(poolTempValues [iCount][tokenInd+1:]))
+    temperature = poolTempValues [iCount][:tokenInd]
 
-json_string += """
-     ]
-}"""
+    sumOfTemps += float(poolTempValues [iCount][:tokenInd])
 
-print json_string
+    if  float(temperature) > float( poolStats ['MaxTempEver'] ) :
+        poolStats ['MaxTempEver'] = temperature
+        poolStats ['MaxTempEverDate'] = poolTempValues [iCount][tokenInd+1:]
 
-data = json.loads(json_string)
+    if  float(temperature) < float(poolStats ['MinTempEver']) :
+        poolStats ['MinTempEver'] = temperature
+        poolStats ['MinTempEverDate'] = poolTempValues [iCount][tokenInd+1:]
 
-print json.dumps(data,indent=4)
-
-#print data["temps"][2]
-
-
+    poolStats ['SumTempFor'+str(tempDateTime[1])] += float(temperature)
+    poolStats ['SumFor'+str(tempDateTime[1])] += 1
 
 
+poolStats ['AverageTemp'] = sumOfTemps/len(poolTempValues)
+poolStats ['AverageFor6'] = poolStats ['SumTempFor6']/poolStats ['SumFor6']
+
+print "Average Temp = " + str(poolStats ['AverageTemp'] )
+print "MaxTempEver = " + str(poolStats ['MaxTempEver'] ) + " on " + time.asctime(time.localtime(float(poolStats ['MaxTempEverDate'])))
+print "MinTempEver = " + str(poolStats ['MinTempEver'] ) + " on " + time.asctime(time.localtime(float(poolStats ['MinTempEverDate'])))
+
+for iCount in range( 1,13):
+    if int(poolStats ['SumFor'+ str(iCount) ]) > 0:
+        print "Average " + str(iCount) + " = " +  str( poolStats ['SumTempFor'+ str(iCount)]  / poolStats ['SumFor'+ str(iCount)] )
 
 
-#json.dumps ( {poolTempValues [0] })
+#print poolStats
