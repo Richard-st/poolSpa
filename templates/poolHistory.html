@@ -18,11 +18,16 @@
     <link href="static/css/style.css" rel="stylesheet" />
 
     <!-- canvassjs -->
-    <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <!-- <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
+    <script src="static/js/canvasjs.min.js" rel="stylesheet"></script>
 
     <!-- Custom styles for this template -->
     <link href="static/css/base-template.css" rel="stylesheet">
     <link href="static/css/spa-colours.css" rel="stylesheet" />
+
+    <!-- Date Time Format -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/en-nz.js"></script>
 
 
 	<!-- Socket IO -->
@@ -30,14 +35,45 @@
     <script type="text/javascript" charset="utf-8">
         var tempData = [];
         var dataPoints = [];
+        var dataPoints2 = [];
+        var dataPoints3 = [];
         var socket = io.connect();
         var chart;
 
-        var dataSeries = { type: "line"};
+
+        // Temperature Readings
+        var dataSeries = { type: "area"
+                          ,markerType:"none"
+                          ,lineThickness:0.5
+                          ,fillOpacity: .1};
+
+        // High Low Bar
+        var dataSeries2 = { type: "rangeColumn",
+                           fillOpacity: 1,
+                           dataPoints: [],
+                           color: "#369EAD",
+                           indexLabel: "{y[#index]}",
+                           indexLabelFontSize: 12,
+                           yValueFormatString: "#0.#",
+                           dataPoints: [],
+                         };
+
+        // Month Average
+        var dataSeries3 = { type: "spline"
+                           ,fillOpacity: 1
+                           ,markerType:"circle"
+                           ,markerColor: "#369EAD"
+                           ,lineColor: "#369EAD" };
+
 
         dataSeries.dataPoints = dataPoints;
         tempData.push(dataSeries);
 
+        dataSeries2.dataPoints = dataPoints2;
+        tempData.push(dataSeries2);
+
+        dataSeries3.dataPoints = dataPoints3;
+        tempData.push(dataSeries3);
 
 
         socket.on('connect', function() {
@@ -49,17 +85,27 @@
             var poolStatusJSON = jQuery.parseJSON(data);
 
             dataPoints = [];
+            dataPoints2 = [];
+            dataPoints3 = [];
 
             for (i in poolStatusJSON.temps) {
               dataPoints.push({
                     x:  new Date(poolStatusJSON.temps[i].timestamp*1000),
                     y:  poolStatusJSON.temps[i].temp
               });
-
             }
 
+            for (i = 0; i < poolStatusJSON['months'].length; i++) {
+              dataPoints2.push({
+                    //x:  new Date(poolStatusJSON.temps[i].timestamp*1000)  ,
+                    x:  new Date(poolStatusJSON.months[i].monthTSAve*1000),
+                    y:  [poolStatusJSON.months[i].minTempForMonth,
+                         poolStatusJSON.months[i].maxTempForMonth]
+              });
+              dataPoints3.push( { x: new Date(poolStatusJSON.months[i].monthTSAve*1000),
+                                  y: poolStatusJSON.months[i].monthTempAve});
 
-            //dataPoints.push ({options: [{cubicInterpolationMode : "default"}] });
+            }
 
             dataSeries.dataPoints = dataPoints;
 
@@ -69,7 +115,30 @@
             tempData = [];
             tempData.push(dataSeries);
 
+            dataSeries2.dataPoints = dataPoints2;
+
+
+            tempData.push(dataSeries2);
+
+            dataSeries3.dataPoints = dataPoints3;
+            dataSeries3.lineColor= "#6e5ea2";
+            dataSeries3.markerColor= "#6e5ea2";
+            tempData.push(dataSeries3);
+
+
             chart.render();
+
+            // Set hottest, coldest and current temps
+            document.getElementById("maxTempEverDate").innerHTML = moment(poolStatusJSON['maxTempEverDate']*1000 ).format('ddd DD MMM YYYY @ h:mm:ss a');
+            document.getElementById("maxTempEver").value         = poolStatusJSON['maxTempEver'] + " c";
+
+            document.getElementById("minTempEverDate").innerHTML = moment(poolStatusJSON['minTempEverDate']*1000 ).format('ddd DD MMM YYYY @ h:mm:ss a');
+            document.getElementById("minTempEver").value         = poolStatusJSON['minTempEver'] + " c";
+
+            document.getElementById("currTempDate").innerHTML = moment(poolStatusJSON.temps[poolStatusJSON.temps.length -1].timestamp * 1000 ).format('ddd DD MMM YYYY @ h:mm:ss a');
+            document.getElementById("currTemp").value         = poolStatusJSON.temps[poolStatusJSON.temps.length -1].temp + " c";
+
+
         })
 
 
@@ -79,18 +148,16 @@
         chart = new CanvasJS.Chart("chartContainer",
         {
           zoomEnabled: true,
-          title:{
-            text: "Pool Temperatures"
-          },
           animationEnabled: true,
-          axisX:{
-              valueFormatString: "DD-MMM-YYYY HH:mm",
-              labelAngle: -50
-          },
+          axisX: { valueFormatString: "DD-MMM-YYYY",
+                    labelAngle: -50
+                  },
 
           axisY :{
             includeZero:false
           },
+
+          dataPointMaxWidth: 2,
 
           data: tempData
 
@@ -145,15 +212,91 @@
         </div>
       </div>
 
-
+<!--
 		  <div class="row">
+        <div class="col-sm-12">
+          <div class="panel  blue-bg">
+            <div id="chartContainer" style="height: 100%; width: 100%;"></div>
+          </div>
+        </div>
+      </div>
+-->
 
+
+     <div class="row">
        <div class="col-sm-12">
-         <div id="chartContainer" style="height: 100%; width: 100%;">
+          <div class="panel  blue-bg">
+            <div class="panel-heading" >
+              <h4><i class="fa fa-cog "></i><strong> Pool Termprature Log</strong></h4>
+            </div>
+            <div class="panel-body" style="padding:5px">
+                <div id="chartContainer" style="height: 400px;"></div>
+            </div>
         </div>
        </div>
+     </div>
 
-      </div>
+      <div class="row">
+
+      	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+					<div class="panel  blue-bg">
+            <div class="panel-heading">
+              <h4><i class="fa fa-thermometer-full "></i><strong> Hottest</strong></h4>
+            </div>
+
+            <div class="panel-actions">
+              <div class="input-group input-sm ">
+                <div class="input-group-addon " id="basic-addon1" style="width:50%;text-align:left " >
+                   <span id="maxTempEverDate">  </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Spa Temp" aria-describedby="basic-addon1" id="maxTempEver" >
+              </div>
+            </div>
+  				</div>
+        </div><!--/.col-->
+
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+					<div class="panel  blue-bg">
+            <div class="panel-heading">
+              <h4><i class="fa fa-thermometer-quarter "></i><strong> Coldest</strong></h4>
+            </div>
+
+            <div class="panel-actions">
+              <div class="input-group input-sm ">
+                <div class="input-group-addon " id="basic-addon1" style="width:50%;text-align:left " >
+                  <span id="minTempEverDate">  </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Spa Temp" aria-describedby="basic-addon1" id="minTempEver" >
+              </div>
+            </div>
+  				</div>
+        </div><!--/.col-->
+
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+					<div class="panel  blue-bg">
+            <div class="panel-heading">
+              <h4><i class="fa fa-thermometer-half "></i><strong> Current</strong></h4>
+            </div>
+
+            <div class="panel-actions">
+              <div class="input-group input-sm ">
+                <div class="input-group-addon " id="basic-addon1" style="width:50%;text-align:left " >
+                  <span id="currTempDate">  </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Current Temp" aria-describedby="basic-addon1" id="currTemp" >
+              </div>
+            </div>
+  				</div>
+        </div><!--/.col-->
+
+
+
+
+			</div><!--/.row-->
+
+
+
+
     </div>
 
 

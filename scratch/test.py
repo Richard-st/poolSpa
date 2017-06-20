@@ -2,8 +2,8 @@ import json
 import redis
 import time
 
-poolStats= {'MaxTempEver': 0   , 'MinTempEver': 999, 'Month':[]}
 
+poolStats= {'MaxTempEver': 0   , 'MinTempEver': 999, 'Month':[]}
 
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
@@ -21,7 +21,6 @@ def getPoolStatistics():
 
     poolTempValues = r.lrange("poolTemp:history",0,-1)
 
-    print len(poolTempValues)
     if len(poolTempValues)== 0:  #bail if no values returned
         return
 
@@ -57,11 +56,12 @@ def getPoolStatistics():
             #
             #update dictionary for ending month
             #
-            aveMonthTemp = currentMonthTempSum / currentMonthReadingCount
-            aveMonthTS   = currentMonthTSSum / currentMonthReadingCount
-            poolStats['Month'].append({'MonthInc':currentMonthInc, 'MonthTempAve' : aveMonthTemp,'MonthTSAve' : aveMonthTS,'MaxTempForMonth' : maxTempForMonth,'MinTempForMonth' : minTempForMonth })
+            if currentMonthReadingCount > 0 :
+                aveMonthTemp = currentMonthTempSum / currentMonthReadingCount
+                aveMonthTS   = currentMonthTSSum / currentMonthReadingCount
+                poolStats['Month'].append({'MonthInc':currentMonthInc, 'MonthTempAve' : aveMonthTemp,'MonthTSAve' : aveMonthTS,'MaxTempForMonth' : maxTempForMonth,'MinTempForMonth' : minTempForMonth })
             #
-            print "month " + str(currentMonth) + " inc=" + str(currentMonthInc) + " temp sum=" + str(currentMonthTempSum)+ " temp count=" + str(currentMonthReadingCount)+ " temp TS sum=" + str(currentMonthTSSum)
+
             #
             #reset for new month
             #
@@ -97,73 +97,35 @@ def getPoolStatistics():
     aveMonthTS   = currentMonthTSSum / currentMonthReadingCount
     poolStats['Month'].append({'MonthInc':currentMonthInc, 'MonthTempAve' : aveMonthTemp,'MonthTSAve' : aveMonthTS,'MaxTempForMonth' : maxTempForMonth,'MinTempForMonth' : minTempForMonth })
     #
-    print poolStats
+
+    #---------------------------------------
+    # start of json struct
+    #---------------------------------------
+    json_string = '{"name":"poolStats","temps":['
+    # temps of json struct
+    if len(poolTempValues) > 0:
+        tokenInd=poolTempValues[len(poolTempValues)-1].find(":")
+        json_string += ( """ {"temp" : """+poolTempValues [len(poolTempValues)-1][:tokenInd]+ """ , "timestamp" : """ + poolTempValues [len(poolTempValues)-1][tokenInd+1:]+"}"   )
+
+    for iCount in xrange(  len(poolTempValues)-2, -1, -1  ):
+        tokenInd=poolTempValues[iCount].find(":")
+        json_string += ","
+        json_string += ( """ {"temp" : """+poolTempValues [iCount][:tokenInd]+ """ , "timestamp" : """ + poolTempValues [iCount][tokenInd+1:]+"}"   )
+
+    # end of json struct
+    json_string += """
+    ]"""
+
+    # add stats (changing first { for ,)
+    json_string += json.dumps(poolStats).replace('{', ',', 1)
+    print json_string
+    #print poolStats
 
     return
 
-'''
-    for iCount in range( 0,len(poolTempValues)  ):
-        tokenInd=poolTempValues[iCount].find(":")
-
-        tempDateTime = time.localtime(float(poolTempValues [iCount][tokenInd+1:]))
-        temperature = poolTempValues [iCount][:tokenInd]
-
-
-        sumOfTemps += float(poolTempValues [iCount][:tokenInd])
-
-        if  float(temperature) > float( poolStats ['MaxTempEver'] ) :
-            poolStats ['MaxTempEver'] = temperature
-            poolStats ['MaxTempEverDate'] = poolTempValues [iCount][tokenInd+1:]
-
-        if  float(temperature) < float(poolStats ['MinTempEver']) :
-            poolStats ['MinTempEver'] = temperature
-            poolStats ['MinTempEverDate'] = poolTempValues [iCount][tokenInd+1:]
-
-        if  float(temperature) > float(poolStats ['MaxTempFor'+str(tempDateTime[1])]) :
-            poolStats ['MaxTempFor'+str(tempDateTime[1])] = temperature
-            poolStats ['MaxTempDateFor'+str(tempDateTime[1])] = poolTempValues [iCount][tokenInd+1:]
-
-        if  float(temperature) < float(poolStats ['MinTempFor'+str(tempDateTime[1])]) :
-            poolStats ['MinTempFor'+str(tempDateTime[1])] = temperature
-            poolStats ['MinTempDateFor'+str(tempDateTime[1])] = poolTempValues [iCount][tokenInd+1:]
-
-            poolStats ['SumTempFor'+str(tempDateTime[1])] += float(temperature)
-            poolStats ['SumFor'+str(tempDateTime[1])] += 1
-
-
-    poolStats ['AverageTemp'] = sumOfTemps/len(poolTempValues)
-    poolStats ['AverageFor6'] = poolStats ['SumTempFor6']/poolStats ['SumFor6']
-'''
 
 
 getPoolStatistics()
 
-#testDict = {'MaxTempEver': 0   , 'MinTempEver': '999',
-#            'Month': [{'MonthInc':0, 'MonthAve' : 123},{'MonthInc':1, 'MonthAve' : 223}]  };
-#testDict = {}
-#print "before"
-#print testDict['Month']
-##print "after"
-#testDict['Month'].append({'MonthInc':1, 'MonthAve' : 223})
-#print testDict['Month']
-
-
-#print testDict['Month1'][1]['MonthAve']
-#print testDict
-#print len(testDict['Month'])
-
-'''
-print "Average Temp = " + str(poolStats ['AverageTemp'] )
-
-
-print "MaxTempEver = " + str(poolStats ['MaxTempEver'] ) + " on " + time.asctime(time.localtime(float(poolStats ['MaxTempEverDate'])))
-print "MinTempEver = " + str(poolStats ['MinTempEver'] ) + " on " + time.asctime(time.localtime(float(poolStats ['MinTempEverDate'])))
-
-for iCount in range( 1,13):
-    if int(poolStats ['SumFor'+ str(iCount) ]) > 0:
-        print "Average " + str(iCount) + " = " +  str( poolStats ['SumTempFor'+ str(iCount)]  / poolStats ['SumFor'+ str(iCount)] )
-        print "Max Temp for " + str(iCount) + " = " +  str( poolStats ['MaxTempFor'+ str(iCount)] ) + " on " + time.asctime(time.localtime(float(poolStats ['MaxTempDateFor'+ str(iCount)])))
-        print "Min Temp for " + str(iCount) + " = " +  str( poolStats ['MinTempFor'+ str(iCount)] ) + " on " + time.asctime(time.localtime(float(poolStats ['MinTempDateFor'+ str(iCount)])))
-'''
-
-#print poolStats
+#for iCount in range( 0,len(poolStats['Month'])):
+    #print poolStats['Month'][iCount]['MonthTempAve']

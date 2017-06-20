@@ -110,7 +110,7 @@ def getAllPoolTemps():
 @app.route('/api/pool/',methods=['GET','POST'])
 def poolBroadcast():
          socketio.emit('poolTempList',myPoolSpaThing.getAllPoolTemps() , broadcast=True)
-         return "1"
+         return myPoolSpaThing.getAllPoolTemps()
 
 
 
