@@ -45,7 +45,10 @@
         var dataSeries = { type: "area"
                           ,markerType:"none"
                           ,lineThickness:0.5
-                          ,fillOpacity: .1};
+                          ,fillOpacity: .1
+                          ,xValueFormatString: "HH:mm DD-MMM"
+                          ,toolTipContent: '<div style="text-align:center">Temperature</div> {x} <b>{y}<sup> c</sup></b>'
+                        };
 
         // High Low Bar
         var dataSeries2 = { type: "rangeColumn",
@@ -54,8 +57,11 @@
                            color: "#369EAD",
                            indexLabel: "{y[#index]}",
                            indexLabelFontSize: 12,
-                           yValueFormatString: "#0.#",
+                           yValueFormatString: "#0.0#",
+                           xValueFormatString: "MMMM",
+                           toolTipContent: '<div style="text-align:center">{x}</div>  High : <b>{y[1]}<sup> c</sup></b> Low : <b>{y[0]}<sup> c</sup></b>',
                            dataPoints: [],
+
                          };
 
         // Month Average
@@ -63,7 +69,12 @@
                            ,fillOpacity: 1
                            ,markerType:"circle"
                            ,markerColor: "#369EAD"
-                           ,lineColor: "#369EAD" };
+                           ,lineColor: "#369EAD"
+                           ,yValueFormatString: "#0.0"
+                           ,xValueFormatString: "MMMM"
+                           ,toolTipContent: '<div style="text-align:center">{x} Average: <b>{y} <sup>c</sup></b></div>'
+
+                         };
 
 
         dataSeries.dataPoints = dataPoints;
@@ -156,8 +167,6 @@
           axisY :{
             includeZero:false
           },
-
-          dataPointMaxWidth: 2,
 
           data: tempData
 
