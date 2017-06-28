@@ -1,5 +1,6 @@
 
 import paho.mqtt.client as mqtt
+import paho.mqtt.publish as publish
 import redis
 import time
 import requests
@@ -49,6 +50,16 @@ def on_message(poolTempClient, userdata, msg):
     logger.info("message in: "+msg.topic +":"+str(msg.payload) )
     topicList = msg.topic.split("/")
 
+    #
+    # Heartbeat ping requests
+    #
+    try:
+        if ( topicList[0] == myconfig.MQTT_PATH and
+            topicList[1] == "ping" ):
+            # send back a pong
+            publish.single( myconfig.MQTT_PATH + "/pong", 0, 0, False, hostname=myconfig.MQTT_SERVER, port=myconfig.MQTT_PORT)
+    except BaseException as e:
+        logger.info("failed to send pong:" + str(e) )
 
     #
     # Device logging message
@@ -143,7 +154,6 @@ def on_message(poolTempClient, userdata, msg):
     except:
       logger.info("failed to tore switch acknowledge status " )
 
-    logger.info("Debug 4 " )
 
 #
 # program body
