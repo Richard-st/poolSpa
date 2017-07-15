@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '/home/dad/poolSpa')
+sys.path.insert(0, '/home/pi/poolSpa')
 import time
 import subprocess, signal
 import os
@@ -60,7 +60,7 @@ def main():
             except BaseException as e:
                 print("failed to send ping:" + str(e) )
 
-            time.sleep(2)
+            time.sleep(10)
             pongClient.loop_stop()
 
             print ("spa Alive = " + str(spaAlive) )
@@ -83,10 +83,10 @@ def main():
                         os.kill(pid, signal.SIGKILL)
 
                 print "starting poolSpaPage"
-                print os.spawnl(os.P_NOWAIT, '/usr/bin/python', 'python' ,'/home/dad/poolSpa/poolSpaPage.py')
+                print os.spawnl(os.P_NOWAIT, '/usr/bin/python', 'python' ,'/home/pi/poolSpa/poolSpaPage.py')
 
                 print "starting mqttSub"
-                print os.spawnl(os.P_NOWAIT, '/usr/bin/python', 'python' ,'/home/dad/poolSpa/mqttSub.py')
+                print os.spawnl(os.P_NOWAIT, '/usr/bin/python', 'python' ,'/home/pi/poolSpa/mqttSub.py')
 
                 time.sleep(2)
 
