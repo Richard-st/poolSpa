@@ -1,5 +1,7 @@
 #! /bin/sh
-cd /home/dad/poolSpa
-sudo python poolSpaPage.py &
-sudo python mqttSub.py &
+cd /home/pi/poolSpa
+#sudo python poolSpaPage.py &
+#sudo python mqttSub.py &
+python /home/pi/spaWatchdog.py &
+
 

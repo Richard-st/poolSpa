@@ -88,7 +88,7 @@ def main():
                 print "starting mqttSub"
                 print os.spawnl(os.P_NOWAIT, '/usr/bin/python', 'python' ,'/home/pi/poolSpa/mqttSub.py')
 
-                time.sleep(2)
+                time.sleep(10)
 
 
 

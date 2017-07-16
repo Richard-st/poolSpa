@@ -162,7 +162,7 @@ def on_message(poolTempClient, userdata, msg):
 
 # set up loging
 
-logging.config.fileConfig("logger.conf")
+logging.config.fileConfig("/home/pi/poolSpa/logger.conf")
 
 # create logger
 logger = logging.getLogger("mqttSub")

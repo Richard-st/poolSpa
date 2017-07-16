@@ -25,7 +25,7 @@ import time
 
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 # set up loging
-logging.config.fileConfig("logger.conf")
+logging.config.fileConfig("/home/pi/poolSpa/logger.conf")
 logger = logging.getLogger("poolSpaThing")
 
 
